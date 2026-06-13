@@ -84,6 +84,11 @@ export class ShopPage {
     return this.header.locator('button.userBtn');
   }
 
+  /** Desktop nav link by its visible label (e.g. 'Cakes', 'Our Story'). */
+  navLink(label: string): Locator {
+    return this.header.locator('nav.deskNav').getByRole('link', { name: label, exact: true });
+  }
+
   async openCart() {
     await this.cartLink.click();
   }

@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { test, expect, PRODUCTS } from './fixtures';
+import { E2E_AUTH } from './flags';
 
 /**
  * PRE-EXISTING a11y gaps in the app (not test defects), allow-listed per rule by
@@ -86,6 +87,7 @@ test.describe('Accessibility — automated scan', () => {
   });
 
   test('auth modal has no unexpected WCAG A/AA violations', async ({ app, page }) => {
+    test.skip(!E2E_AUTH, 'auth feature flag is OFF in this run');
     await app.gotoHome();
     await app.openAuth();
     const violations = await scan(page);
@@ -110,6 +112,7 @@ test.describe('Accessibility — semantics', () => {
   });
 
   test('the auth modal is an accessible dialog', async ({ app }) => {
+    test.skip(!E2E_AUTH, 'auth feature flag is OFF in this run');
     await app.gotoHome();
     await app.openAuth();
     await expect(app.authDialog).toHaveAttribute('aria-modal', 'true');

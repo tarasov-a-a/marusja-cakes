@@ -1,6 +1,10 @@
 import { test, expect, PROVIDER_NAMES } from './fixtures';
+import { E2E_AUTH } from './flags';
 
 test.describe('Authentication modal', () => {
+  // Whole flow depends on the auth surface; skipped when the flag is OFF (E2E default).
+  test.skip(() => !E2E_AUTH, 'auth feature flag is OFF in this run');
+
   test.beforeEach(async ({ app }) => {
     await app.gotoHome();
   });

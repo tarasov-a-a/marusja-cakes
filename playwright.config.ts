@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { FLAG_ENV } from './e2e/flags';
 
 /**
  * E2E configuration for the MarusjaCakes SvelteKit app.
@@ -52,5 +53,12 @@ export default defineConfig({
     timeout: 120_000,
     stdout: 'ignore',
     stderr: 'pipe',
+    // Feature flags default OFF for E2E (see e2e/flags.ts) so the suite drives the
+    // anonymous, desktop-only build. Passed explicitly so they beat any local
+    // `.env`. To flip one, export it for the whole command:
+    //   VITE_FEATURE_AUTH=true npm run test:e2e
+    // NOTE: ignored when an already-running dev server is reused locally
+    // (reuseExistingServer) — that server keeps whatever flags it started with.
+    env: FLAG_ENV,
   },
 });

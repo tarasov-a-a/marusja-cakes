@@ -1,4 +1,5 @@
 import { test, expect, type ShopPage } from './fixtures';
+import { E2E_AUTH } from './flags';
 
 /** Sign in on the home page, then open settings via client-side navigation. */
 async function openSettings(app: ShopPage) {
@@ -9,6 +10,9 @@ async function openSettings(app: ShopPage) {
 }
 
 test.describe('Settings — access control', () => {
+  // The whole /settings account area lives behind the auth flag.
+  test.skip(() => !E2E_AUTH, 'auth feature flag is OFF in this run');
+
   test('a guest visiting settings is prompted to sign in', async ({ app, page }) => {
     await page.goto('/settings/'); // full load → no session
     await expect(page.getByRole('heading', { name: 'Please sign in' })).toBeVisible();
@@ -17,6 +21,8 @@ test.describe('Settings — access control', () => {
 });
 
 test.describe('Settings — signed in', () => {
+  test.skip(() => !E2E_AUTH, 'auth feature flag is OFF in this run');
+
   test('lands on the profile tab populated from the session', async ({ app, page }) => {
     await openSettings(app);
     await expect(page).toHaveTitle(/Account settings/);
