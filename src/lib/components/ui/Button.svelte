@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
 
-  type Variant = 'primary' | 'rose' | 'soft' | 'ghost';
+  type Variant = 'primary' | 'rose' | 'soft' | 'ghost' | 'whatsapp' | 'telegram';
 
   interface Props extends HTMLButtonAttributes {
     variant?: Variant;
@@ -71,6 +71,21 @@
 
   .soft:active {
     transform: none;
+  }
+
+  /* Official messenger brand colors (WhatsApp green / Telegram blue). */
+  .whatsapp {
+    background: #25d366;
+    color: #fff;
+    padding: 13px 26px;
+    box-shadow: 0 6px 0 #1da851;
+  }
+
+  .telegram {
+    background: #229ed9;
+    color: #fff;
+    padding: 13px 26px;
+    box-shadow: 0 6px 0 #1b87ba;
   }
 
   .ghost {

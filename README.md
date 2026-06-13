@@ -21,7 +21,7 @@ plain HTML/CSS/JS at build time — no server required.
 |------|------|
 | `/` | Landing (hero, trust strip, menu, story band) |
 | `/product/[productId]` | Product detail — prerendered for all products via `entries()` |
-| `/cart` | Cart + order summary |
+| `/cart` | Cart, order summary, and WhatsApp/Telegram order send |
 | `/settings` | Account (profile, orders, notifications, payment, security) |
 
 ## Commands
@@ -56,6 +56,24 @@ VITE_FEATURE_AUTH=false npm run build   # ship an anonymous-only catalog/cart
 
 A flag is off only when set to a falsy token (`false`/`0`/`off`/`no`); unset or
 anything else keeps the committed default. Changing a flag needs a rebuild.
+
+## Ordering
+
+There is **no checkout / payment backend** — the cart's "Send your order in"
+buttons hand the order to the shop owner over WhatsApp and Telegram via
+client-side click-to-chat deep links, so the app stays fully static. The order is
+built once as Markdown (`src/lib/order.ts`) and rendered per platform by the
+vendored `messenger-send` converters (`src/lib/messenger.ts`). Telegram can't
+pre-fill a DM to a personal username, so that button copies the order to the
+clipboard and opens the chat to paste.
+
+The target accounts live in `src/lib/contacts.ts` and default to the live
+handles; override per build via `.env`:
+
+| Var | Default | Used for |
+|-----|---------|----------|
+| `VITE_WHATSAPP_NUMBER` | `381665814358` | `wa.me/<number>` (digits only, no `+`) |
+| `VITE_TELEGRAM_USERNAME` | `anatolii_tarasov_a` | `t.me/<username>` (no leading `@`) |
 
 ## Project structure
 

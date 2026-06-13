@@ -1,14 +1,37 @@
 <script lang="ts">
-  import { ArrowRight, CreditCard, Shield } from 'lucide-svelte';
+  import { ArrowRight, MessageCircle, Send } from 'lucide-svelte';
+  import { browser } from '$app/environment';
   import CartLine from '$lib/components/cart/CartLine.svelte';
   import Button from '$lib/components/ui/Button.svelte';
   import CakeArt from '$lib/components/ui/CakeArt.svelte';
+  import { TELEGRAM_USERNAME, WHATSAPP_NUMBER } from '$lib/contacts';
   import { formatPrice } from '$lib/currency';
   import { t } from '$lib/i18n';
+  import { toPlainText } from '$lib/messenger';
+  import { buildOrderMarkdown, telegramChatUrl, whatsAppHref } from '$lib/order';
   import { cart, flash, subtotal } from '$lib/stores/shop';
 
   let delivery = $derived($subtotal > 1500 || $subtotal === 0 ? 0 : 150);
   let total = $derived($subtotal + delivery);
+
+  let orderMd = $derived(
+    buildOrderMarkdown($cart, $t, { subtotal: $subtotal, delivery, total }),
+  );
+  let waHref = $derived(whatsAppHref(WHATSAPP_NUMBER, orderMd));
+
+  // Telegram links to a personal username can't pre-fill text, so copy the order
+  // to the clipboard and open the chat for the customer to paste.
+  async function sendViaTelegram(): Promise<void> {
+    if (browser) {
+      try {
+        await navigator.clipboard.writeText(toPlainText(orderMd));
+      } catch {
+        // Clipboard blocked (permissions / insecure context) — open the chat anyway.
+      }
+      window.open(telegramChatUrl(TELEGRAM_USERNAME), '_blank', 'noopener');
+    }
+    flash($t('cart:telegramCopied'));
+  }
 </script>
 
 <svelte:head>
@@ -61,13 +84,20 @@
           <span class="totalLabel">{$t('cart:total')}</span>
           <span class="totalVal">{formatPrice(total, 2)}</span>
         </div>
-        <Button variant="rose" fullWidth onclick={() => flash($t('cart:checkoutMock'))}>
-          <CreditCard size={18} /> {$t('cart:checkout')}
-        </Button>
-        <a href="/" class="keepShopping">{$t('cart:keepShopping')}</a>
-        <div class="secure">
-          <Shield size={14} /> {$t('cart:secure')}
+        <div class="sendOrder">
+          <h3 class="sendTitle">{$t('cart:sendOrderTitle')}</h3>
+          <div class="sendButtons">
+            <a href={waHref} target="_blank" rel="noopener noreferrer" class="sendLink">
+              <Button variant="whatsapp" fullWidth>
+                <MessageCircle size={18} /> {$t('cart:whatsapp')}
+              </Button>
+            </a>
+            <Button variant="telegram" fullWidth onclick={sendViaTelegram}>
+              <Send size={18} /> {$t('cart:telegram')}
+            </Button>
+          </div>
         </div>
+        <a href="/" class="keepShopping">{$t('cart:keepShopping')}</a>
       </div>
     </div>
   </div>
@@ -237,15 +267,23 @@
     text-decoration: none;
   }
 
-  .secure {
+  .sendTitle {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-cream);
+    margin: 4px 0 12px;
+  }
+
+  .sendButtons {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 16px;
-    color: var(--color-honey);
-    opacity: 0.7;
-    font-size: 12.5px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sendLink {
+    display: block;
+    text-decoration: none;
   }
 
   @media (max-width: 640px) {

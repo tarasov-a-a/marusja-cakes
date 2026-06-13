@@ -14,8 +14,11 @@
   "free": "Free",
   "freeDeliveryHint": "Add E£{{amount}} more for free delivery!",
   "total": "Total",
-  "checkout": "Checkout",
   "keepShopping": "← Keep shopping",
-  "secure": "Secure checkout · encrypted",
-  "checkoutMock": "Checkout flow — wired to your payment provider"
+  "sendOrderTitle": "Send your order in",
+  "whatsapp": "WhatsApp",
+  "telegram": "Telegram",
+  "telegramCopied": "Order copied — paste it in the chat",
+  "orderHeading": "New order · Marusja Cakes",
+  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}"
 }

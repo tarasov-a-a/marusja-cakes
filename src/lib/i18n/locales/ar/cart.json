@@ -14,8 +14,11 @@
   "free": "مجاني",
   "freeDeliveryHint": "أضف E£{{amount}} منتجًا آخر لتحصل على توصيل مجاني!",
   "total": "الإجمالي",
-  "checkout": "الدفع",
   "keepShopping": "← متابعة التسوق",
-  "secure": "دفع آمن · مشفر",
-  "checkoutMock": "الدفع — اربط مزود الدفع"
+  "sendOrderTitle": "أرسل طلبك عبر",
+  "whatsapp": "WhatsApp",
+  "telegram": "Telegram",
+  "telegramCopied": "تم نسخ الطلب — الصقه في المحادثة",
+  "orderHeading": "طلب جديد · Marusja Cakes",
+  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}"
 }

@@ -57,6 +57,27 @@ green, and — if behaviour changed — the relevant `test:e2e` spec green.
 - `flash()` and other browser-only paths guard on `browser` from
   `$app/environment`. Preserve those guards — prerendering executes module code.
 
+### Ordering — chat deep links, no checkout backend
+- There is **no payment/checkout flow**. The cart's "Send your order in" buttons
+  ([cart/+page.svelte](src/routes/cart/+page.svelte)) hand the order to the shop
+  owner over WhatsApp / Telegram via **client-side click-to-chat deep links** —
+  staying true to the no-backend rule. Don't "add checkout" with a server.
+- [order.ts](src/lib/order.ts) builds the order as locale-aware standard Markdown
+  (`buildOrderMarkdown`, reusing `localizeProduct` + `formatPrice` + the `cart:*`
+  keys) and turns it into links (`whatsAppHref` → `wa.me/<number>?text=…`,
+  `telegramChatUrl` → `t.me/<username>`).
+- [messenger.ts](src/lib/messenger.ts) is the **converter half** of the
+  `messenger-send` skill, vendored as dependency-free pure functions:
+  `toWhatsAppText` (the WhatsApp deep link) and `toPlainText` (the clipboard copy).
+  The skill's *senders* are deliberately omitted — they need bot tokens + a
+  recipient chat id + a server, which this app doesn't have.
+- **Telegram can't pre-fill a DM to a personal username**, so that button copies
+  the order to the clipboard, opens the chat, and flashes a "paste it" toast.
+- Owner handles live in [contacts.ts](src/lib/contacts.ts) (`WHATSAPP_NUMBER`,
+  `TELEGRAM_USERNAME`), defaulting to the live accounts with optional
+  `VITE_WHATSAPP_NUMBER` / `VITE_TELEGRAM_USERNAME` build-time overrides. The
+  WhatsApp/Telegram **Button variants carry the official brand colors.**
+
 ### Data layer — locale-neutral by design
 - `src/lib/data/` holds **locale-neutral** records: a `Product` has `id`, `price`,
   `grad`, `category`/`tag`/`allergens`/`serves` **keys** — never display strings.
