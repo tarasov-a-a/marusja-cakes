@@ -96,6 +96,15 @@
     transition: all 0.2s;
   }
 
+  .filterBtn:not(.filterActive):hover {
+    border-color: var(--color-cocoa);
+    color: var(--color-cocoa);
+  }
+
+  .filterBtn:active {
+    transform: scale(0.96);
+  }
+
   .filterActive {
     border-color: var(--color-cocoa);
     background: var(--color-cocoa);

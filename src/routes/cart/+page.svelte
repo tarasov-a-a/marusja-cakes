@@ -255,7 +255,7 @@
   .keepShopping {
     display: inline-block;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 20px;
     background: none;
     border: none;
     color: var(--color-honey);
@@ -265,6 +265,11 @@
     cursor: pointer;
     text-align: center;
     text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .keepShopping:hover {
+    color: var(--color-cream);
   }
 
   .sendTitle {

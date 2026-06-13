@@ -340,6 +340,10 @@
     transition: all 0.2s;
   }
 
+  .tabBtn:not(.tabActive):hover {
+    background: var(--color-cream);
+  }
+
   .tabActive {
     background: var(--color-cocoa);
     color: var(--color-sponge);
@@ -360,6 +364,11 @@
     font-size: 15px;
     cursor: pointer;
     margin-top: 8px;
+    transition: background 0.2s;
+  }
+
+  .signOut:hover {
+    background: rgba(215, 122, 102, 0.12);
   }
 
   .panel {
@@ -401,6 +410,15 @@
     display: grid;
     place-items: center;
     cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .cameraBtn:hover {
+    background: #cb6a55;
+  }
+
+  .cameraBtn:active {
+    transform: scale(0.92);
   }
 
   .profileName {
@@ -469,6 +487,15 @@
     border: none;
     color: var(--color-rose);
     cursor: pointer;
+    transition: color 0.2s, transform 0.15s;
+  }
+
+  .removeCard:hover {
+    color: #b34a38;
+  }
+
+  .removeCard:active {
+    transform: scale(0.9);
   }
 
   .oauthBox {

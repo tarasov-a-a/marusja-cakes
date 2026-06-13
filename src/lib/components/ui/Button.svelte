@@ -54,11 +54,27 @@
     box-shadow: var(--shadow-cocoa);
   }
 
+  .primary:hover {
+    background: #4a2b12;
+  }
+
+  .primary:active {
+    box-shadow: 0 3px 0 #3d2310;
+  }
+
   .rose {
     background: var(--color-rose);
     color: #fff;
     padding: 13px 26px;
     box-shadow: 0 6px 0 #b85c4a;
+  }
+
+  .rose:hover {
+    background: #cb6a55;
+  }
+
+  .rose:active {
+    box-shadow: 0 3px 0 #b85c4a;
   }
 
   .soft {
@@ -67,6 +83,11 @@
     padding: 12px 22px;
     border: 2px solid var(--color-card-edge);
     box-shadow: none;
+  }
+
+  .soft:hover {
+    background: var(--color-cream);
+    border-color: var(--color-cocoa);
   }
 
   .soft:active {
@@ -81,6 +102,14 @@
     box-shadow: 0 6px 0 #1da851;
   }
 
+  .whatsapp:hover {
+    background: #1fbe5b;
+  }
+
+  .whatsapp:active {
+    box-shadow: 0 3px 0 #1da851;
+  }
+
   .telegram {
     background: #229ed9;
     color: #fff;
@@ -88,11 +117,23 @@
     box-shadow: 0 6px 0 #1b87ba;
   }
 
+  .telegram:hover {
+    background: #1e8fc4;
+  }
+
+  .telegram:active {
+    box-shadow: 0 3px 0 #1b87ba;
+  }
+
   .ghost {
     background: transparent;
     color: var(--color-cocoa);
     padding: 10px 16px;
     box-shadow: none;
+  }
+
+  .ghost:hover {
+    background: rgba(90, 52, 22, 0.08);
   }
 
   .ghost:active {

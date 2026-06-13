@@ -300,6 +300,11 @@
     transition: all 0.2s;
   }
 
+  .sizeBtn:not(.sizeActive):hover {
+    border-color: var(--color-honey);
+    background: var(--color-sponge);
+  }
+
   .sizeActive {
     border-color: var(--color-cocoa);
     background: var(--color-sponge);
@@ -347,6 +352,11 @@
     cursor: pointer;
     display: grid;
     place-items: center;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .qtyBtn:active {
+    transform: scale(0.9);
   }
 
   .qtyBtnMinus {
@@ -354,9 +364,17 @@
     color: var(--color-cocoa);
   }
 
+  .qtyBtnMinus:hover {
+    background: rgba(90, 52, 22, 0.08);
+  }
+
   .qtyBtnPlus {
     background: var(--color-cocoa);
     color: var(--color-sponge);
+  }
+
+  .qtyBtnPlus:hover {
+    background: #4a2b12;
   }
 
   .qtyVal {

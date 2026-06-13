@@ -190,6 +190,12 @@
     cursor: pointer;
     text-align: start;
     text-decoration: none;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  .colLink:hover {
+    opacity: 1;
+    color: var(--color-cream);
   }
 
   .newsletterText {
@@ -227,6 +233,15 @@
     cursor: pointer;
     flex-shrink: 0;
     color: var(--color-cocoa);
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .submitBtn:hover {
+    background: #e8b06a;
+  }
+
+  .submitBtn:active {
+    transform: scale(0.93);
   }
 
   .copy {
