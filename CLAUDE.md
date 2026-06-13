@@ -100,6 +100,27 @@ Only `pancho-pineapple` and the landing hero ship real responsive WebP variants
 `hasPhotos(id)` gates which path renders. Helpers build `srcset`/`sizes`; keep the
 width lists and the `static/` files in sync if you touch image output.
 
+### Feature flags (`src/lib/flags.ts`)
+Build-time flags read from `VITE_FEATURE_*` env vars. Vite **statically inlines**
+`import.meta.env.VITE_*` at build, so this stays prerender-safe (no request-time
+read) and the value is fixed per build. Set them in `.env`/`.env.local`
+(gitignored — see [.env.example](.env.example)) or inline a build:
+`VITE_FEATURE_AUTH=false npm run build`.
+- Convention: a flag is OFF **only** when explicitly set to a falsy token
+  (`false`/`0`/`off`/`no`). Unset or anything else ⇒ ON, so features keep their
+  committed default unless a build deliberately turns them off. `parseFlag()`
+  encodes this; reuse it rather than reading env vars ad hoc.
+- Current flags: `auth` (default **ON** — header account button, auth modal,
+  `/settings`; off ⇒ pure anonymous catalog/cart), `mobileNav` (default **ON** —
+  hamburger toggle + dropdown nav), `extraNav` (default **OFF** — the "Our Story" /
+  "Order Custom" links, whose destinations don't exist yet; "Cakes" always shows).
+- Gate in markup with `{#if features.x}` (a disabled branch never renders and its
+  handlers never run, though the code still ships); use `isEnabled(name)` outside
+  `.svelte` files. `/settings` redirects home when `auth` is off rather than
+  prompting a modal that no longer renders.
+- Changing a flag requires a rebuild / dev-server restart — it's not runtime
+  toggleable.
+
 ## Testing
 
 Two layers with a deliberate division of labour — respect the boundary.
@@ -136,6 +157,16 @@ Two layers with a deliberate division of labour — respect the boundary.
   icon-only controls that expose no accessible name — those are a known a11y gap
   flagged in `accessibility.spec.ts`, not a pattern to copy.
 - Accessibility is enforced in E2E via `@axe-core/playwright` — don't regress it.
+- **Feature flags default OFF in E2E** (unlike the app, which defaults most ON).
+  [e2e/flags.ts](e2e/flags.ts) mirrors `parseFlag` from `src/lib/flags.ts` (it
+  can't import that module — `import.meta.env` doesn't exist in the Node host) and
+  exports `FLAG_ENV`, which [playwright.config.ts](playwright.config.ts) hands to
+  the dev server via `webServer.env`. So the default run exercises the anonymous,
+  desktop-only build. Auth/settings/a11y specs `skip` when `E2E_AUTH` is off;
+  [feature-flags.spec.ts](e2e/feature-flags.spec.ts) asserts each surface matches
+  its flag. To run with a flag on, export it for the whole command:
+  `VITE_FEATURE_AUTH=true npm run test:e2e`. Caveat: `env` is ignored when a local
+  dev server is reused (`reuseExistingServer`) — that server keeps its own flags.
 
 ## Conventions & guardrails
 
