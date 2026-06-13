@@ -29,6 +29,7 @@
         <button
           type="button"
           class="filterBtn {cat === c ? 'filterActive' : ''}"
+          aria-pressed={cat === c}
           onclick={() => (cat = c)}
         >
           {$t(`categories:${c}`)}

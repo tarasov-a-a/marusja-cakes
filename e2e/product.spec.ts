@@ -16,14 +16,14 @@ test.describe('Product detail', () => {
   });
 
   test('Standard size is selected by default and priced at the base price', async ({ app }) => {
-    await expect(app.sizeButton('Standard')).toHaveClass(/sizeActive/);
+    await expect(app.sizeButton('Standard')).toHaveAttribute('aria-pressed', 'true');
     await expect(app.addToCartButton).toContainText(price(pancho.price)); // E£900
   });
 
   test('choosing a larger size updates the active state and the total', async ({ app }) => {
     await app.sizeButton('Grand').click();
-    await expect(app.sizeButton('Grand')).toHaveClass(/sizeActive/);
-    await expect(app.sizeButton('Standard')).not.toHaveClass(/sizeActive/);
+    await expect(app.sizeButton('Grand')).toHaveAttribute('aria-pressed', 'true');
+    await expect(app.sizeButton('Standard')).toHaveAttribute('aria-pressed', 'false');
     // Grand delta is +18 → E£918 for a single cake.
     await expect(app.addToCartButton).toContainText(price(pancho.price + 18));
   });
@@ -55,7 +55,7 @@ test.describe('Product detail', () => {
 
   test('"Back to all cakes" returns to the landing page', async ({ app, page }) => {
     await page.getByRole('link', { name: 'Back to all cakes' }).click();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/localhost:\d+\/$/);
     await expect(app.menuHeading).toBeVisible();
   });
 });
@@ -80,6 +80,6 @@ test.describe('Product detail — edge cases', () => {
     // Use the related-products grid to navigate client-side to another product.
     await page.locator('.related .card').first().getByRole('heading').click();
     await expect(app.qtyValue).toHaveText('1');
-    await expect(app.sizeButton('Standard')).toHaveClass(/sizeActive/);
+    await expect(app.sizeButton('Standard')).toHaveAttribute('aria-pressed', 'true');
   });
 });

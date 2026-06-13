@@ -57,7 +57,7 @@
         {/if}
       </button>
 
-      <a href="/cart" class="cartBtn">
+      <a href="/cart" class="cartBtn" aria-label={$t('common:a11y.cart')}>
         <ShoppingBag size={21} color="var(--color-sponge)" strokeWidth={2.2} />
         {#if $cartCount > 0}
           <span class="cartBadge">{$cartCount}</span>
@@ -69,6 +69,7 @@
         class="menuToggle mobOnly"
         onclick={() => (mobile = !mobile)}
         aria-expanded={mobile}
+        aria-label={mobile ? $t('common:a11y.closeMenu') : $t('common:a11y.menu')}
       >
         {#if mobile}
           <X size={26} />

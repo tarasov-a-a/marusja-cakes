@@ -41,7 +41,7 @@
       </div>
 
       <div class="summary">
-        <h3 class="summaryTitle">{$t('cart:summary')}</h3>
+        <h2 class="summaryTitle">{$t('cart:summary')}</h2>
         <div class="row">
           <span>{$t('cart:subtotal')}</span>
           <span class="rowVal">{formatPrice($subtotal, 2)}</span>

@@ -6,13 +6,13 @@ test.describe('Menu category filtering', () => {
   });
 
   test('defaults to "All" with every cake shown', async ({ app }) => {
-    await expect(app.filterButton('All')).toHaveClass(/filterActive/);
+    await expect(app.filterButton('All')).toHaveAttribute('aria-pressed', 'true');
     await expect(app.productCards).toHaveCount(6);
   });
 
   test('"Signature" shows only signature cakes', async ({ app, page }) => {
     await app.filterButton('Signature').click();
-    await expect(app.filterButton('Signature')).toHaveClass(/filterActive/);
+    await expect(app.filterButton('Signature')).toHaveAttribute('aria-pressed', 'true');
     await expect(app.productCards).toHaveCount(2);
     await expect(page.getByRole('heading', { name: PRODUCTS.pancho.name })).toBeVisible();
     await expect(page.getByRole('heading', { name: PRODUCTS.rose.name })).toBeVisible();

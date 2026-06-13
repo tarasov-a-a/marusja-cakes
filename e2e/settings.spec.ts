@@ -22,7 +22,8 @@ test.describe('Settings — signed in', () => {
     await expect(page).toHaveTitle(/Account settings/);
     await expect(page.getByRole('heading', { name: 'Your profile' })).toBeVisible();
     await expect(page.getByLabel('Full name')).toHaveValue('Mona Halabi');
-    await expect(page.getByLabel('Email')).toHaveValue('you@google.com');
+    // `exact` keeps this off the footer newsletter input (aria-label "Email address").
+    await expect(page.getByLabel('Email', { exact: true })).toHaveValue('you@google.com');
     await expect(page.getByText('via Google')).toBeVisible();
   });
 
@@ -74,7 +75,7 @@ test.describe('Settings — signed in', () => {
     await openSettings(app);
     await page.getByRole('button', { name: 'Sign out' }).click();
 
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/localhost:\d+\/$/);
     await app.expectToast('Signed out');
     await expect(app.accountButton).toHaveAttribute('title', 'Sign in'); // logged out again
   });

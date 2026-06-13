@@ -2,25 +2,47 @@ import AxeBuilder from '@axe-core/playwright';
 import { test, expect, PRODUCTS } from './fixtures';
 
 /**
- * Rule ids that axe reports as PRE-EXISTING gaps in the app (not test defects).
- * Tracked here so the scan stays green-on-no-regression while still failing if
- * a NEW class of violation appears. See the report handed to the team:
- *   - 'link-name'     → the header cart link is icon-only (no accessible name)
- *   - 'button-name'   → product "add" / quantity steppers are icon-only
- *   - 'color-contrast'    → the rose/caramel palette (e.g. .priceTag, .category)
- *                           is below the WCAG AA 4.5:1 text-contrast threshold
- *   - 'nested-interactive'→ ProductCard nests role="button" inside role="link"
- *   - 'no-focusable-content' → those same ProductCard role wrappers expose no
- *                           natively focusable child
- * Remove an id from this list once the underlying markup/design is fixed.
+ * PRE-EXISTING a11y gaps in the app (not test defects), allow-listed per rule by
+ * the STABLE class signature of the offending element. We deliberately do NOT
+ * allow-list whole rule ids: a bare `color-contrast` suppression would also hide
+ * a brand-new contrast failure on an unrelated component. Instead each known gap
+ * lists the element signatures we accept — a violation node whose target matches
+ * none of them is reported as unexpected and fails the scan.
+ *
+ * Signatures are matched as substrings of axe's node `target`, so they must be
+ * stable class tokens only — never Svelte scoped hashes (`s-…`) or `:nth-child`,
+ * both of which change between builds.
+ *
+ *   - 'link-name'      → icon-only header cart link + footer social links
+ *   - 'button-name'    → icon-only add-to-cart / quantity steppers / modal close
+ *   - 'color-contrast' → the rose/caramel palette is below WCAG AA 4.5:1
+ *   - 'nested-interactive' → ProductCard nests role="button" inside role="link"
+ *
+ * Remove a signature (or a whole rule) once the underlying markup/design is fixed.
  */
-const KNOWN_A11Y_GAPS = new Set([
-  'link-name',
-  'button-name',
-  'color-contrast',
-  'nested-interactive',
-  'no-focusable-content',
-]);
+const KNOWN_A11Y_GAPS: Record<string, string[]> = {
+  'link-name': ['.cartBtn', '.social'],
+  'button-name': ['.addBtn', '.qtyBtnMinus', '.qtyBtnPlus', '.submitBtn', '.close'],
+  'color-contrast': [
+    '.priceTag',
+    '.label',
+    '.filterBtn',
+    '.tagHighlight',
+    '.tagDefault',
+    '.category',
+    '.tagline',
+    '.rating',
+    '.copy',
+    '.metaKey',
+    '.sizeSub',
+    '.sizePrice',
+    '.btn',
+    '.providerBtn',
+    '.price',
+    '> h3',
+  ],
+  'nested-interactive': ['.card'],
+};
 
 async function scan(page: import('@playwright/test').Page) {
   const results = await new AxeBuilder({ page })
@@ -29,8 +51,25 @@ async function scan(page: import('@playwright/test').Page) {
   return results.violations;
 }
 
+/** A node is "known" only if its target matches an allow-listed signature for its rule. */
+function isKnownNode(ruleId: string, target: string): boolean {
+  return (KNOWN_A11Y_GAPS[ruleId] ?? []).some((sig) => target.includes(sig));
+}
+
+/**
+ * Reduce raw violations to the genuinely unexpected ones: any unknown rule, or a
+ * known rule firing on a node whose target we haven't allow-listed. Returns the
+ * offending {rule, target} pairs so the failure message names them precisely.
+ */
 function unexpected(violations: Awaited<ReturnType<typeof scan>>) {
-  return violations.filter((v) => !KNOWN_A11Y_GAPS.has(v.id));
+  const offenders: Array<{ rule: string; target: string }> = [];
+  for (const v of violations) {
+    for (const node of v.nodes) {
+      const target = node.target.join(' ');
+      if (!isKnownNode(v.id, target)) offenders.push({ rule: v.id, target });
+    }
+  }
+  return offenders;
 }
 
 test.describe('Accessibility — automated scan', () => {

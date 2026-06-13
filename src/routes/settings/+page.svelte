@@ -72,7 +72,7 @@
 {#if !$user}
   <div class="guest">
     <User size={56} color="var(--color-caramel)" style="margin-bottom: 16px" />
-    <h2 class="guestTitle">{$t('settings:signInTitle')}</h2>
+    <h1 class="guestTitle">{$t('settings:signInTitle')}</h1>
     <p class="guestText">{$t('settings:signInText')}</p>
   </div>
 {:else}
@@ -109,7 +109,7 @@
             <div class="profileHead">
               <div class="avatarWrap">
                 <img src={$user.avatar} alt="" class="avatar" />
-                <button type="button" class="cameraBtn">
+                <button type="button" class="cameraBtn" aria-label={$t('common:a11y.changePhoto')}>
                   <Camera size={14} color="#fff" />
                 </button>
               </div>

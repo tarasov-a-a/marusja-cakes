@@ -14,7 +14,7 @@ test.describe('Internationalisation', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
     await expect(app.menuHeading).toBeVisible();
-    await expect(app.languageButton('English')).toHaveClass(/active/);
+    await expect(app.languageButton('English')).toHaveAttribute('aria-pressed', 'true');
   });
 
   test('switching to Russian translates content and updates <html lang>', async ({ app, page }) => {

@@ -16,5 +16,21 @@
     "previous": "Предыдущее изображение",
     "next": "Следующее изображение",
     "imageOf": "Изображение {{current}} из {{total}}"
+  },
+  "a11y": {
+    "skipToContent": "Перейти к основному содержанию",
+    "menu": "Открыть меню",
+    "closeMenu": "Закрыть меню",
+    "cart": "Корзина",
+    "addToCart": "Добавить {{name}} в корзину",
+    "subscribe": "Подписаться",
+    "emailLabel": "Адрес эл. почты",
+    "changePhoto": "Изменить фото профиля",
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "twitter": "Twitter",
+      "email": "Напишите нам"
+    }
   }
 }

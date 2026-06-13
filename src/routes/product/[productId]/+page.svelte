@@ -102,6 +102,7 @@
             <button
               type="button"
               class="sizeBtn {size === s.key ? 'sizeActive' : ''}"
+              aria-pressed={size === s.key}
               onclick={() => (size = s.key)}
             >
               <div class="sizeName">{s.label}</div>

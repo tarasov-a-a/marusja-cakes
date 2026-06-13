@@ -64,7 +64,7 @@ test.describe('Navigation', () => {
     ).toBeVisible();
 
     await app.header.locator('a.logoBtn').click();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/localhost:\d+\/$/);
     await expect(app.menuHeading).toBeVisible();
   });
 

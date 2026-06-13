@@ -7,7 +7,7 @@
   import Footer from '$lib/components/layout/Footer.svelte';
   import Header from '$lib/components/layout/Header.svelte';
   import Toast from '$lib/components/ui/Toast.svelte';
-  import { dir, locale, STORAGE_KEY } from '$lib/i18n';
+  import { dir, locale, STORAGE_KEY, t } from '$lib/i18n';
 
   let { children }: { children: Snippet } = $props();
 
@@ -21,9 +21,10 @@
 </script>
 
 <div class="shell">
+  <a href="#main" class="skipLink">{$t('common:a11y.skipToContent')}</a>
   <BgTexture />
   <Header />
-  <main class="main">
+  <main id="main" class="main">
     {@render children()}
   </main>
   <Footer />
@@ -44,5 +45,22 @@
     position: relative;
     z-index: 1;
     padding-top: 8px;
+  }
+
+  .skipLink {
+    position: absolute;
+    inset-inline-start: -9999px;
+    top: 0;
+    z-index: 1000;
+    background: var(--color-cocoa);
+    color: var(--color-cream);
+    padding: 10px 16px;
+    border-radius: 0 0 12px 12px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .skipLink:focus {
+    inset-inline-start: 0;
   }
 </style>

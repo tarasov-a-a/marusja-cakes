@@ -3,7 +3,12 @@
   import { t } from '$lib/i18n';
   import { LOGO } from '$lib/logo';
 
-  const socials = [Instagram, Facebook, Twitter, Mail];
+  const socials = [
+    { Icon: Instagram, key: 'instagram' },
+    { Icon: Facebook, key: 'facebook' },
+    { Icon: Twitter, key: 'twitter' },
+    { Icon: Mail, key: 'email' },
+  ];
 
   let columns = $derived([
     {
@@ -39,8 +44,13 @@
       </div>
       <p class="about">{$t('footer:about')}</p>
       <div class="socials">
-        {#each socials as Icon, i (i)}
-          <a href="/" class="social" onclick={(e) => e.preventDefault()}>
+        {#each socials as { Icon, key } (key)}
+          <a
+            href="/"
+            class="social"
+            aria-label={$t(`common:a11y.social.${key}`)}
+            onclick={(e) => e.preventDefault()}
+          >
             <Icon size={19} />
           </a>
         {/each}
@@ -58,8 +68,13 @@
       <h4 class="colTitle">{$t('footer:newsletterTitle')}</h4>
       <p class="newsletterText">{$t('footer:newsletterText')}</p>
       <div class="newsletterRow">
-        <input class="emailInput" placeholder={$t('footer:emailPlaceholder')} type="email" />
-        <button type="button" class="submitBtn">
+        <input
+          class="emailInput"
+          type="email"
+          placeholder={$t('footer:emailPlaceholder')}
+          aria-label={$t('common:a11y.emailLabel')}
+        />
+        <button type="button" class="submitBtn" aria-label={$t('common:a11y.subscribe')}>
           <ArrowRight size={18} />
         </button>
       </div>

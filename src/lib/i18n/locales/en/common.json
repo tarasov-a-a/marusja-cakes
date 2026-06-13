@@ -16,5 +16,21 @@
     "previous": "Previous image",
     "next": "Next image",
     "imageOf": "Image {{current}} of {{total}}"
+  },
+  "a11y": {
+    "skipToContent": "Skip to main content",
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "cart": "Shopping cart",
+    "addToCart": "Add {{name}} to cart",
+    "subscribe": "Subscribe",
+    "emailLabel": "Email address",
+    "changePhoto": "Change profile photo",
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "twitter": "Twitter",
+      "email": "Email us"
+    }
   }
 }

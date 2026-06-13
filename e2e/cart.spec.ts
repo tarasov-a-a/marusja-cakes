@@ -13,7 +13,7 @@ test.describe('Cart — empty state', () => {
     await expect(page.getByRole('heading', { name: 'Your cart is empty' })).toBeVisible();
 
     await page.getByRole('link', { name: /Find a cake/ }).click();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/localhost:\d+\/$/);
     await expect(app.menuHeading).toBeVisible();
   });
 });
@@ -106,7 +106,7 @@ test.describe('Cart — with items', () => {
     await app.openCart();
 
     await page.getByRole('link', { name: /Keep shopping/ }).click();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/localhost:\d+\/$/);
     await app.expectCartCount(1); // cart survives client-side navigation
   });
 });

@@ -65,6 +65,7 @@
       <button
         type="button"
         class="addBtn"
+        aria-label={$t('common:a11y.addToCart', { name: product.name })}
         onclick={(e) => {
           e.stopPropagation();
           addToCart(product);

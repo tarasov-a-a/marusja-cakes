@@ -34,6 +34,7 @@
     <button
       type="button"
       class="langBtn {$locale === code ? 'active' : ''}"
+      aria-pressed={$locale === code}
       onclick={() => change(code)}
     >
       {$t(`language:${code}`)}
