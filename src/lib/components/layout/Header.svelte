@@ -2,6 +2,7 @@
   import { goto } from '$app/navigation';
   import { Menu as MenuIcon, ShoppingBag, User, X } from 'lucide-svelte';
   import LanguageSwitcher from '$lib/components/layout/LanguageSwitcher.svelte';
+  import { features } from '$lib/flags';
   import { t } from '$lib/i18n';
   import { LOGO } from '$lib/logo';
   import { cartCount, setAuthOpen, user } from '$lib/stores/shop';
@@ -16,11 +17,15 @@
     return () => window.removeEventListener('scroll', onScroll);
   });
 
-  let nav = $derived([
-    { label: $t('common:nav.cakes'), href: '/' },
-    { label: $t('common:nav.story'), href: '/' },
-    { label: $t('common:nav.custom'), href: '/' },
-  ]);
+  let nav = $derived(
+    features.extraNav
+      ? [
+          { label: $t('common:nav.cakes'), href: '/' },
+          { label: $t('common:nav.story'), href: '/' },
+          { label: $t('common:nav.custom'), href: '/' },
+        ]
+      : []
+  );
 </script>
 
 <header class="header {stuck ? 'stuck' : ''}">
@@ -43,19 +48,21 @@
 
     <div class="actions">
       <LanguageSwitcher />
-      <button
-        type="button"
-        class="userBtn {$user ? 'userBtnLogged' : ''}"
-        onclick={() => ($user ? goto('/settings') : setAuthOpen(true))}
-        title={$user ? 'Account' : 'Sign in'}
-      >
-        {#if $user}
-          <img src={$user.avatar} alt="" class="userAvatar" />
-          <span class="deskNav">{$user.name.split(' ')[0]}</span>
-        {:else}
-          <User size={22} strokeWidth={2.2} />
-        {/if}
-      </button>
+      {#if features.auth}
+        <button
+          type="button"
+          class="userBtn {$user ? 'userBtnLogged' : ''}"
+          onclick={() => ($user ? goto('/settings') : setAuthOpen(true))}
+          title={$user ? 'Account' : 'Sign in'}
+        >
+          {#if $user}
+            <img src={$user.avatar} alt="" class="userAvatar" />
+            <span class="deskNav">{$user.name.split(' ')[0]}</span>
+          {:else}
+            <User size={22} strokeWidth={2.2} />
+          {/if}
+        </button>
+      {/if}
 
       <a href="/cart" class="cartBtn" aria-label={$t('common:a11y.cart')}>
         <ShoppingBag size={21} color="var(--color-sponge)" strokeWidth={2.2} />
@@ -64,23 +71,25 @@
         {/if}
       </a>
 
-      <button
-        type="button"
-        class="menuToggle mobOnly"
-        onclick={() => (mobile = !mobile)}
-        aria-expanded={mobile}
-        aria-label={mobile ? $t('common:a11y.closeMenu') : $t('common:a11y.menu')}
-      >
-        {#if mobile}
-          <X size={26} />
-        {:else}
-          <MenuIcon size={26} />
-        {/if}
-      </button>
+      {#if features.mobileNav}
+        <button
+          type="button"
+          class="menuToggle mobOnly"
+          onclick={() => (mobile = !mobile)}
+          aria-expanded={mobile}
+          aria-label={mobile ? $t('common:a11y.closeMenu') : $t('common:a11y.menu')}
+        >
+          {#if mobile}
+            <X size={26} />
+          {:else}
+            <MenuIcon size={26} />
+          {/if}
+        </button>
+      {/if}
     </div>
   </div>
 
-  {#if mobile}
+  {#if features.mobileNav && mobile}
     <div class="mobileNav mobOnly mobileOpen">
       {#each nav as item (item.label)}
         <a href={item.href} class="mobileLink" onclick={() => (mobile = false)}>

@@ -19,15 +19,23 @@
   import Toggle from '$lib/components/ui/Toggle.svelte';
   import { getOrdersForUser, sortOrders } from '$lib/data/orders';
   import { formatPrice } from '$lib/currency';
+  import { features } from '$lib/flags';
   import { locale, t } from '$lib/i18n';
   import { flash, setAuthOpen, setUser, user } from '$lib/stores/shop';
   import type { Order, OrderItem, OrderStatus, SettingsTab } from '$lib/types';
 
   let tab = $state<SettingsTab>('profile');
 
-  // Prompt sign-in when arriving without a session.
+  // The account area belongs to the auth feature. With auth disabled the route
+  // is unreachable from the UI, but a direct hit still lands here — send it home
+  // rather than prompting a modal that no longer renders.
   $effect(() => {
-    if (!$user) setAuthOpen(true);
+    if (!features.auth) {
+      goto('/');
+    } else if (!$user) {
+      // Prompt sign-in when arriving without a session.
+      setAuthOpen(true);
+    }
   });
 
   function orderSubtotal(items: OrderItem[]) {

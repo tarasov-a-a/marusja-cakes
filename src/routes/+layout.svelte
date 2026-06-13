@@ -7,6 +7,7 @@
   import Footer from '$lib/components/layout/Footer.svelte';
   import Header from '$lib/components/layout/Header.svelte';
   import Toast from '$lib/components/ui/Toast.svelte';
+  import { features } from '$lib/flags';
   import { dir, locale, STORAGE_KEY, t } from '$lib/i18n';
 
   let { children }: { children: Snippet } = $props();
@@ -28,7 +29,9 @@
     {@render children()}
   </main>
   <Footer />
-  <AuthModal />
+  {#if features.auth}
+    <AuthModal />
+  {/if}
   <Toast />
 </div>
 
