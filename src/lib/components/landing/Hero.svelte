@@ -10,9 +10,9 @@
   } from '$lib/productImages';
 
   let stats = $derived([
-    ['12k+', $t('landing:stats.boxes')],
+    ['12k+', $t('landing:stats.cakes')],
     ['4.9★', $t('landing:stats.rating')],
-    ['6am', $t('landing:stats.daily')],
+    [$t('landing:stats.dailyValue'), $t('landing:stats.daily')],
   ] as const);
 
   function scrollToMenu() {

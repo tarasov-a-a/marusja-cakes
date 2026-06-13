@@ -141,8 +141,8 @@ export class ShopPage {
     return this.page.locator('.qtyVal');
   }
 
-  get addToBoxButton(): Locator {
-    return this.page.getByRole('button', { name: /Add to box/ });
+  get addToCartButton(): Locator {
+    return this.page.getByRole('button', { name: /Add to cart/ });
   }
 
   // ── Auth modal ────────────────────────────────────────────────────────────

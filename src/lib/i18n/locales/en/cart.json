@@ -1,9 +1,9 @@
 {
-  "added": "{{name}} added to your box",
-  "emptyTitle": "Your box is empty",
+  "added": "{{name}} added to your cart",
+  "emptyTitle": "Your cart is empty",
   "emptyText": "A cake-shaped hole is waiting to be filled.",
   "findCake": "Find a cake",
-  "title": "Your cake box",
+  "title": "Your cart",
   "treats_one": "{{count}} treat ready to go.",
   "treats_other": "{{count}} treats ready to go.",
   "each": "{{size}} · E£{{price}} each",

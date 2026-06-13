@@ -8,7 +8,7 @@
     "grandServes": "на 16",
     "standardServes": "на {{serves}}"
   },
-  "addToBox": "В коробку · E£{{total}}",
+  "addToCart": "В корзину · E£{{total}}",
   "meta": {
     "serves": "Порций",
     "allergens": "Аллергены",

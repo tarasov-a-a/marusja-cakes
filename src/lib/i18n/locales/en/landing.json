@@ -6,8 +6,9 @@
   "browseCakes": "Browse the cakes",
   "bestseller": "Today's bestseller",
   "stats": {
-    "boxes": "happy boxes",
+    "cakes": "happy cakes",
     "rating": "avg rating",
+    "dailyValue": "11am",
     "daily": "fresh daily"
   },
   "trust": {

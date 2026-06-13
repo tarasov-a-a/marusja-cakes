@@ -6,8 +6,9 @@
   "browseCakes": "تصفح الكعكات",
   "bestseller": "الأكثر مبيعاً اليوم",
   "stats": {
-    "boxes": "صندوق سعيد",
+    "cakes": "كعكة سعيدة",
     "rating": "متوسط التقييم",
+    "dailyValue": "11 صباحاً",
     "daily": "طازجة يومياً"
   },
   "trust": {

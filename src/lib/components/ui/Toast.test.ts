@@ -13,8 +13,8 @@ describe('Toast.svelte', () => {
 
   it('shows the message and the "visible" class when the store is set', async () => {
     const { container } = render(Toast);
-    toast.set('Added to your box');
-    expect(await screen.findByText('Added to your box')).toBeInTheDocument();
+    toast.set('Added to your cart');
+    expect(await screen.findByText('Added to your cart')).toBeInTheDocument();
     expect(container.querySelector('.toast')).toHaveClass('visible');
   });
 

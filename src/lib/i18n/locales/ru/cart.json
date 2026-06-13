@@ -1,9 +1,9 @@
 {
-  "added": "{{name}} добавлен в коробку",
-  "emptyTitle": "Коробка пуста",
+  "added": "{{name}} добавлен в корзину",
+  "emptyTitle": "Корзина пуста",
   "emptyText": "Здесь ждёт торт.",
   "findCake": "Найти торт",
-  "title": "Ваша коробка",
+  "title": "Ваша корзина",
   "treats_one": "{{count}} сладость готова.",
   "treats_other": "{{count}} сладостей готово.",
   "each": "{{size}} · E£{{price}} за шт.",

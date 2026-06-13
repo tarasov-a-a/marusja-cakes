@@ -1,9 +1,9 @@
 {
-  "added": "أُضيف {{name}} إلى صندوقك",
-  "emptyTitle": "صندوقك فارغ",
+  "added": "أُضيف {{name}} إلى سلتك",
+  "emptyTitle": "سلتك فارغة",
   "emptyText": "ثغرة على شكل كعكة تنتظر أن تُملأ.",
   "findCake": "ابحث عن كعكة",
-  "title": "صندوق الكعك",
+  "title": "سلة التسوق",
   "treats_one": "{{count}} حلوى جاهزة.",
   "treats_other": "{{count}} حلويات جاهزة.",
   "each": "{{size}} · E£{{price}} للقطعة",

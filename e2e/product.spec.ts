@@ -17,7 +17,7 @@ test.describe('Product detail', () => {
 
   test('Standard size is selected by default and priced at the base price', async ({ app }) => {
     await expect(app.sizeButton('Standard')).toHaveClass(/sizeActive/);
-    await expect(app.addToBoxButton).toContainText(price(pancho.price)); // E£900
+    await expect(app.addToCartButton).toContainText(price(pancho.price)); // E£900
   });
 
   test('choosing a larger size updates the active state and the total', async ({ app }) => {
@@ -25,7 +25,7 @@ test.describe('Product detail', () => {
     await expect(app.sizeButton('Grand')).toHaveClass(/sizeActive/);
     await expect(app.sizeButton('Standard')).not.toHaveClass(/sizeActive/);
     // Grand delta is +18 → E£918 for a single cake.
-    await expect(app.addToBoxButton).toContainText(price(pancho.price + 18));
+    await expect(app.addToCartButton).toContainText(price(pancho.price + 18));
   });
 
   test('quantity stepper increments and clamps at a minimum of 1', async ({ app }) => {
@@ -33,18 +33,18 @@ test.describe('Product detail', () => {
 
     await app.qtyPlus.click();
     await expect(app.qtyValue).toHaveText('2');
-    await expect(app.addToBoxButton).toContainText(price(pancho.price * 2)); // E£1800
+    await expect(app.addToCartButton).toContainText(price(pancho.price * 2)); // E£1800
 
     await app.qtyMinus.click();
     await app.qtyMinus.click(); // would go to 0 — must clamp
     await expect(app.qtyValue).toHaveText('1');
   });
 
-  test('adding to the box updates the cart badge and flashes a toast', async ({ app }) => {
+  test('adding to the cart updates the cart badge and flashes a toast', async ({ app }) => {
     await app.qtyPlus.click(); // qty = 2
-    await app.addToBoxButton.click();
+    await app.addToCartButton.click();
 
-    await app.expectToast(new RegExp(`${pancho.name} added to your box`));
+    await app.expectToast(new RegExp(`${pancho.name} added to your cart`));
     await app.expectCartCount(2);
   });
 

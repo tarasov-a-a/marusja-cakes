@@ -76,12 +76,12 @@ describe('i18n', () => {
   describe('translate — interpolation', () => {
     it('substitutes {{var}} placeholders', () => {
       expect(tr()('cart:added', { name: 'Rose Velvet' })).toBe(
-        'Rose Velvet added to your box',
+        'Rose Velvet added to your cart',
       );
     });
 
     it('leaves an unknown placeholder untouched', () => {
-      expect(tr()('cart:added', {})).toBe('{{name}} added to your box');
+      expect(tr()('cart:added', {})).toBe('{{name}} added to your cart');
     });
 
     it('coerces numeric params to strings', () => {
@@ -117,6 +117,35 @@ describe('i18n', () => {
     it('returns the key when missing in every locale', () => {
       setLocale('ar');
       expect(tr()('common:totally.missing.key')).toBe('common:totally.missing.key');
+    });
+  });
+
+  describe('translate — locale-specific time conventions', () => {
+    // Same locale-neutral key, but each language formats the daily cut-off
+    // time in its own clock convention: English uses 12-hour "11am",
+    // Russian uses the 24-hour "11:00".
+    it('formats the daily cut-off as "11am" in english', () => {
+      setLocale('en');
+      expect(tr()('landing:stats.dailyValue')).toBe('11am');
+    });
+
+    it('formats the daily cut-off as "11:00" in russian', () => {
+      setLocale('ru');
+      expect(tr()('landing:stats.dailyValue')).toBe('11:00');
+    });
+
+    it('formats the daily cut-off as "11 صباحاً" in arabic', () => {
+      setLocale('ar');
+      expect(tr()('landing:stats.dailyValue')).toBe('11 صباحاً');
+    });
+
+    it('carries the same convention into the delivery line', () => {
+      setLocale('en');
+      expect(tr()('landing:trust.nextDay')).toBe('Next day after 11am');
+      setLocale('ru');
+      expect(tr()('landing:trust.nextDay')).toBe('На следующий день после 11:00');
+      setLocale('ar');
+      expect(tr()('landing:trust.nextDay')).toBe('التالي بعد الساعة 11 صباحًا');
     });
   });
 });

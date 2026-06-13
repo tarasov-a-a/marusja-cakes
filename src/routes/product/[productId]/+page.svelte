@@ -135,7 +135,7 @@
           }}
         >
           <ShoppingBag size={19} />
-          {$t('product:addToBox', { total: sizePrice * qty })}
+          {$t('product:addToCart', { total: sizePrice * qty })}
         </Button>
       </div>
 

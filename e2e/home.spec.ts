@@ -11,7 +11,7 @@ test.describe('Landing page', () => {
       page.getByRole('heading', { name: /Cakes that taste like/ }),
     ).toBeVisible();
     await expect(page.getByText('Baked fresh this morning')).toBeVisible();
-    await expect(page.getByText('happy boxes')).toBeVisible();
+    await expect(page.getByText('happy cakes')).toBeVisible();
     await expect(page.getByText('avg rating')).toBeVisible();
   });
 

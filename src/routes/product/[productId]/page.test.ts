@@ -15,7 +15,8 @@ describe('product/[productId] page loader', () => {
 
   describe('entries (static prerender list)', () => {
     it('enumerates every product id so each page is built', () => {
-      const ids = entries().map((e) => e.productId);
+      // `entries` is synchronous here; EntryGenerator widens to a Promise union.
+      const ids = (entries() as Array<{ productId: string }>).map((e) => e.productId);
       expect(ids).toEqual(PRODUCTS.map((p) => p.id));
     });
   });

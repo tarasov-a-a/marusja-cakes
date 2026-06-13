@@ -8,9 +8,9 @@ function cartLine(page: import('@playwright/test').Page, name: string) {
 }
 
 test.describe('Cart — empty state', () => {
-  test('shows the empty box message and a path back to the menu', async ({ page, app }) => {
+  test('shows the empty cart message and a path back to the menu', async ({ page, app }) => {
     await page.goto('/cart/'); // full load → in-memory cart starts empty
-    await expect(page.getByRole('heading', { name: 'Your box is empty' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Your cart is empty' })).toBeVisible();
 
     await page.getByRole('link', { name: /Find a cake/ }).click();
     await expect(page).toHaveURL(/\/$/);
@@ -78,7 +78,7 @@ test.describe('Cart — with items', () => {
     await app.openCart();
 
     await cartLine(page, pancho.name).locator('.qty .qtyBtn').first().click();
-    await expect(page.getByRole('heading', { name: 'Your box is empty' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Your cart is empty' })).toBeVisible();
   });
 
   test('the remove button clears the item', async ({ app, page }) => {
@@ -87,7 +87,7 @@ test.describe('Cart — with items', () => {
     await app.openCart();
 
     await page.getByRole('button', { name: /Remove/ }).click();
-    await expect(page.getByRole('heading', { name: 'Your box is empty' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Your cart is empty' })).toBeVisible();
     await app.expectCartCount(0);
   });
 

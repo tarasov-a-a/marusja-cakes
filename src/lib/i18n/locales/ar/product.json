@@ -8,7 +8,7 @@
     "grandServes": "16 شخصاً",
     "standardServes": "{{serves}} أشخاص"
   },
-  "addToBox": "أضف للصندوق · E£{{total}}",
+  "addToCart": "أضف إلى السلة · E£{{total}}",
   "meta": {
     "serves": "تكفي",
     "allergens": "مسببات الحساسية",

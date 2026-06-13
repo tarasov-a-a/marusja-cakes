@@ -9,7 +9,7 @@ test.describe('Authentication modal', () => {
     await app.openAuth();
     await expect(app.authDialog).toHaveAttribute('aria-modal', 'true');
     await expect(
-      app.authDialog.getByText('Sign in to save your box & track orders'),
+      app.authDialog.getByText('Sign in to save your cart & track orders'),
     ).toBeVisible();
 
     for (const provider of ['Google', 'Apple', 'Facebook', 'GitHub']) {
