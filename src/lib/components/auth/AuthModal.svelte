@@ -136,6 +136,15 @@
     place-items: center;
     cursor: pointer;
     color: var(--color-cocoa);
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .close:hover {
+    background: rgba(90, 52, 22, 0.26);
+  }
+
+  .close:active {
+    transform: scale(0.92);
   }
 
   .logo {
@@ -190,7 +199,11 @@
     font-weight: 700;
     font-size: 15px;
     cursor: pointer;
-    transition: transform 0.15s, opacity 0.2s;
+    transition: transform 0.15s, opacity 0.2s, filter 0.2s;
+  }
+
+  .providerBtn:hover:not(:disabled) {
+    filter: brightness(0.96);
   }
 
   .providerBtn:active:not(:disabled) {

@@ -215,6 +215,15 @@
     font-family: inherit;
     color: var(--color-cocoa);
     font-weight: 700;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .userBtn:hover {
+    background: rgba(90, 52, 22, 0.08);
+  }
+
+  .userBtnLogged:hover {
+    background: var(--color-cream);
   }
 
   .userBtnLogged {
@@ -243,6 +252,16 @@
     place-items: center;
     box-shadow: 0 5px 0 #3d2310;
     text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s;
+  }
+
+  .cartBtn:hover {
+    background: #4a2b12;
+  }
+
+  .cartBtn:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #3d2310;
   }
 
   .cartBadge {
@@ -268,6 +287,17 @@
     cursor: pointer;
     color: var(--color-cocoa);
     display: none;
+    padding: 8px;
+    border-radius: 999px;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .menuToggle:hover {
+    background: rgba(90, 52, 22, 0.08);
+  }
+
+  .menuToggle:active {
+    transform: scale(0.92);
   }
 
   .mobileNav {
@@ -289,6 +319,12 @@
     font-size: 16px;
     cursor: pointer;
     text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .mobileLink:hover {
+    background: var(--color-cream);
+    border-color: var(--color-cocoa);
   }
 
   .mobileOpen {

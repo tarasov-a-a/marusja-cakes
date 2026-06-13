@@ -210,10 +210,15 @@
     place-items: center;
     cursor: pointer;
     box-shadow: 0 4px 0 #3d2310;
-    transition: transform 0.15s;
+    transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+  }
+
+  .addBtn:hover {
+    background: #4a2b12;
   }
 
   .addBtn:active {
     transform: translateY(3px);
+    box-shadow: 0 1px 0 #3d2310;
   }
 </style>

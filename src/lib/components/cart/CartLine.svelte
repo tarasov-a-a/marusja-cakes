@@ -129,6 +129,16 @@
     cursor: pointer;
     display: grid;
     place-items: center;
+    transition: background 0.2s, transform 0.15s, filter 0.2s;
+  }
+
+  .qtyBtn:hover {
+    background: rgba(90, 52, 22, 0.1);
+    filter: brightness(0.94);
+  }
+
+  .qtyBtn:active {
+    transform: scale(0.9);
   }
 
   .remove {
@@ -142,6 +152,11 @@
     font-weight: 700;
     font-family: inherit;
     font-size: 13.5px;
+    transition: color 0.2s;
+  }
+
+  .remove:hover {
+    color: #b34a38;
   }
 
   .itemPrice {
