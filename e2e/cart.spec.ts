@@ -91,13 +91,29 @@ test.describe('Cart — with items', () => {
     await app.expectCartCount(0);
   });
 
-  test('checkout is a mocked flow that flashes a toast', async ({ app, page }) => {
+  test('the WhatsApp button deep-links wa.me with the order pre-filled', async ({ app, page }) => {
     await app.gotoHome();
     await app.addToCartFromCard(pancho.name);
     await app.openCart();
 
-    await page.getByRole('button', { name: /Checkout/ }).click();
-    await app.expectToast(/Checkout flow/);
+    const href = await page
+      .getByRole('link', { name: /WhatsApp/ })
+      .getAttribute('href');
+    expect(href).toContain('wa.me/381665814358');
+    expect(decodeURIComponent(href ?? '')).toContain(pancho.name);
+  });
+
+  test('the Telegram button copies the order and flashes a toast', async ({ app, page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await app.gotoHome();
+    await app.addToCartFromCard(pancho.name);
+    await app.openCart();
+
+    // Opening t.me happens in a new tab; capture it so it doesn't dangle.
+    const popup = page.waitForEvent('popup').catch(() => null);
+    await page.getByRole('button', { name: /Telegram/ }).click();
+    await app.expectToast(/copied/i);
+    await (await popup)?.close();
   });
 
   test('"Keep shopping" returns to the menu while preserving the cart', async ({ app, page }) => {

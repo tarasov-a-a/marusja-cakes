@@ -14,8 +14,11 @@
   "free": "Бесплатно",
   "freeDeliveryHint": "Добавьте ещё E£{{amount}} для бесплатной доставки!",
   "total": "Всего",
-  "checkout": "Оформить",
   "keepShopping": "← Продолжить покупки",
-  "secure": "Безопасная оплата · шифрование",
-  "checkoutMock": "Оплата — подключите провайдера"
+  "sendOrderTitle": "Отправьте заказ через",
+  "whatsapp": "WhatsApp",
+  "telegram": "Telegram",
+  "telegramCopied": "Заказ скопирован — вставьте его в чат",
+  "orderHeading": "Новый заказ · Marusja Cakes",
+  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}"
 }
