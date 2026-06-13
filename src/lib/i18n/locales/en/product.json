@@ -1,0 +1,21 @@
+{
+  "chooseSize": "Choose a size",
+  "sizes": {
+    "petite": "Petite",
+    "standard": "Standard",
+    "grand": "Grand",
+    "petiteServes": "serves 4",
+    "grandServes": "serves 16",
+    "standardServes": "serves {{serves}}"
+  },
+  "addToBox": "Add to box · E£{{total}}",
+  "meta": {
+    "serves": "Serves",
+    "allergens": "Allergens",
+    "keeps": "Keeps",
+    "keepsValue": "4 days chilled",
+    "delivery": "Delivery",
+    "deliveryValue": "Next day after 11am"
+  },
+  "related": "You might also crave…"
+}

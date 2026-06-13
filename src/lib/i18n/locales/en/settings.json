@@ -1,0 +1,73 @@
+{
+  "title": "Account settings",
+  "signInTitle": "Please sign in",
+  "signInText": "You need an account to view your settings.",
+  "signOut": "Sign out",
+  "signedOut": "Signed out",
+  "tabs": {
+    "profile": "Profile",
+    "orders": "Orders",
+    "notifications": "Notifications",
+    "payment": "Payment",
+    "security": "Security"
+  },
+  "profile": {
+    "title": "Your profile",
+    "via": "via {{provider}}",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "phoneValue": "+1 (555) 248-0192",
+    "birthday": "Birthday (free cake!)",
+    "birthdayValue": "March 14",
+    "address": "Delivery address",
+    "addressValue": "42 Maple Lane, Cairo",
+    "save": "Save changes",
+    "saved": "Profile saved"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "seasonal": "New seasonal cakes",
+    "orders": "Order updates",
+    "birthday": "Birthday treats",
+    "newsletter": "Weekly newsletter",
+    "sms": "SMS delivery alerts",
+    "updated": "Preference updated"
+  },
+  "payment": {
+    "title": "Payment methods",
+    "expires": "Expires {{exp}}",
+    "add": "Add payment method",
+    "addMock": "Add-card form opens here"
+  },
+  "orders": {
+    "empty": "No orders yet — your first cake is waiting!",
+    "orderId": "Order #{{id}}",
+    "placedOn": "Placed {{date}}",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
+    "delivery": "Delivery",
+    "free": "Free",
+    "total": "Total",
+    "reorder": "Order again",
+    "reorderMock": "Reorder flow opens here",
+    "status": {
+      "delivered": "Delivered",
+      "processing": "Processing",
+      "cancelled": "Cancelled"
+    }
+  },
+  "security": {
+    "title": "Security",
+    "connected": "Connected via {{provider}}",
+    "oauth": "OAuth 2.0 single sign-on · no password stored",
+    "twoFactor": "Two-factor authentication",
+    "loginAlerts": "Login alerts by email",
+    "trustedDevices": "Trusted devices only",
+    "updated": "Setting updated",
+    "twoFactorUpdated": "2FA updated",
+    "alertsUpdated": "Alerts updated",
+    "reviewSessions": "Review active sessions",
+    "sessionsReviewed": "Active sessions reviewed"
+  }
+}

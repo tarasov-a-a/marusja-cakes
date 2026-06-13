@@ -1,0 +1,20 @@
+{
+  "brand": "كعكات ماروسجا",
+  "tagline": "كعكات صادقة",
+  "loading": "جاري تحميل الكعكات…",
+  "nav": {
+    "cakes": "الكعكات",
+    "story": "قصتنا",
+    "custom": "طلب مخصص"
+  },
+  "backToCakes": "العودة إلى جميع الكعكات",
+  "reviews": "{{count}} مراجعة",
+  "from": "من",
+  "gallery": {
+    "openLightbox": "عرض صورة أكبر",
+    "close": "إغلاق",
+    "previous": "الصورة السابقة",
+    "next": "الصورة التالية",
+    "imageOf": "الصورة {{current}} من {{total}}"
+  }
+}

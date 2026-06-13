@@ -1,0 +1,19 @@
+{
+  "about": "Торты малыми партиями, выпекаем на рассвете и доставляем. Без компромиссов — только масло и терпение.",
+  "sweets": "Сладости",
+  "company": "Компания",
+  "links": {
+    "signature": "Фирменные торты",
+    "chocolate": "Шоколад",
+    "seasonal": "Сезонные",
+    "gifts": "Подарочные наборы",
+    "story": "Наша история",
+    "bakers": "Пекари",
+    "sustainability": "Устойчивость",
+    "careers": "Карьера"
+  },
+  "newsletterTitle": "Свежо из печи",
+  "newsletterText": "Узнайте о новых тортах.",
+  "emailPlaceholder": "you@email.com",
+  "copyright": "© 2026 Marusja Cakes · С маслом в вашем районе"
+}

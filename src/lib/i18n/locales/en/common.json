@@ -1,0 +1,20 @@
+{
+  "brand": "Marusja Cakes",
+  "tagline": "Honest Cakes",
+  "loading": "Loading cakes…",
+  "nav": {
+    "cakes": "Cakes",
+    "story": "Our Story",
+    "custom": "Order Custom"
+  },
+  "backToCakes": "Back to all cakes",
+  "reviews": "{{count}} reviews",
+  "from": "From",
+  "gallery": {
+    "openLightbox": "View larger image",
+    "close": "Close",
+    "previous": "Previous image",
+    "next": "Next image",
+    "imageOf": "Image {{current}} of {{total}}"
+  }
+}

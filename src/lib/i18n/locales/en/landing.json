@@ -1,0 +1,24 @@
+{
+  "badge": "Baked fresh this morning",
+  "heroTitle": "Cakes that taste like",
+  "heroTitleAccent": "someone loves you.",
+  "heroSubtitle": "Honest layer cakes made by hand in small batches. No fondant, no fuss — just real butter, real fruit, and a whole lot of patience.",
+  "browseCakes": "Browse the cakes",
+  "bestseller": "Today's bestseller",
+  "stats": {
+    "boxes": "happy boxes",
+    "rating": "avg rating",
+    "daily": "fresh daily"
+  },
+  "trust": {
+    "delivery": "Free delivery over E£1500",
+    "nextDay": "Next day after 11am",
+    "madeToOrder": "Always made to order",
+    "butter": "Real-butter promise"
+  },
+  "menuLabel": "The Menu",
+  "menuTitle": "Pick your slice of joy",
+  "storyTitle": "Need a cake for something big?",
+  "storyText": "Birthdays, weddings, \"just because Tuesdays.\" Tell us the occasion and we'll design something only-yours.",
+  "customOrder": "Start a custom order"
+}

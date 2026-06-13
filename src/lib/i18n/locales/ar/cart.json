@@ -1,0 +1,21 @@
+{
+  "added": "أُضيف {{name}} إلى صندوقك",
+  "emptyTitle": "صندوقك فارغ",
+  "emptyText": "ثغرة على شكل كعكة تنتظر أن تُملأ.",
+  "findCake": "ابحث عن كعكة",
+  "title": "صندوق الكعك",
+  "treats_one": "{{count}} حلوى جاهزة.",
+  "treats_other": "{{count}} حلويات جاهزة.",
+  "each": "{{size}} · E£{{price}} للقطعة",
+  "remove": "إزالة",
+  "summary": "ملخص الطلب",
+  "subtotal": "المجموع الفرعي",
+  "delivery": "التوصيل",
+  "free": "مجاني",
+  "freeDeliveryHint": "أضف E£{{amount}} منتجًا آخر لتحصل على توصيل مجاني!",
+  "total": "الإجمالي",
+  "checkout": "الدفع",
+  "keepShopping": "← متابعة التسوق",
+  "secure": "دفع آمن · مشفر",
+  "checkoutMock": "الدفع — اربط مزود الدفع"
+}

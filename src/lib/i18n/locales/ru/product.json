@@ -1,0 +1,21 @@
+{
+  "chooseSize": "Выберите размер",
+  "sizes": {
+    "petite": "Мини",
+    "standard": "Стандарт",
+    "grand": "Большой",
+    "petiteServes": "на 4",
+    "grandServes": "на 16",
+    "standardServes": "на {{serves}}"
+  },
+  "addToBox": "В коробку · E£{{total}}",
+  "meta": {
+    "serves": "Порций",
+    "allergens": "Аллергены",
+    "keeps": "Хранение",
+    "keepsValue": "4 дня в холоде",
+    "delivery": "Доставка",
+    "deliveryValue": "На следующий день после 11:00"
+  },
+  "related": "Вам также понравится…"
+}

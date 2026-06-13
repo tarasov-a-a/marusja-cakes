@@ -1,0 +1,77 @@
+{
+  "title": "إعدادات الحساب",
+  "signInTitle": "يرجى تسجيل الدخول",
+  "signInText": "تحتاج حساباً لعرض الإعدادات.",
+  "signOut": "تسجيل الخروج",
+  "signedOut": "تم تسجيل الخروج",
+  "tabs": {
+    "profile": "الملف",
+    "orders": "طلبات",
+    "notifications": "الإشعارات",
+    "payment": "الدفع",
+    "security": "الأمان"
+  },
+  "profile": {
+    "title": "ملفك",
+    "via": "عبر {{provider}}",
+    "fullName": "الاسم الكامل",
+    "email": "البريد",
+    "phone": "الهاتف",
+    "phoneValue": "+1 (555) 248-0192",
+    "birthday": "عيد الميلاد (كعكة مجانية!)",
+    "birthdayValue": "14 مارس",
+    "address": "عنوان التوصيل",
+    "addressValue": "42 Maple Lane, Cairo",
+    "save": "حفظ التغييرات",
+    "saved": "تم حفظ الملف"
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "seasonal": "كعكات موسمية جديدة",
+    "orders": "تحديثات الطلب",
+    "birthday": "هدايا عيد الميلاد",
+    "newsletter": "النشرة الأسبوعية",
+    "sms": "تنبيهات SMS للتوصيل",
+    "updated": "تم تحديث التفضيل"
+  },
+  "payment": {
+    "title": "طرق الدفع",
+    "expires": "تنتهي {{exp}}",
+    "add": "إضافة طريقة دفع",
+    "addMock": "نموذج إضافة بطاقة"
+  },
+  "orders": {
+    "empty": "لا طلبات بعد — كعكتك الأولى في انتظارك!",
+    "orderId": "طلب #{{id}}",
+    "placedOn": "تم الطلب {{date}}",
+    "items_zero": "لا منتجات",
+    "items_one": "{{count}} منتج",
+    "items_two": "{{count}} منتجان",
+    "items_few": "{{count}} منتجات",
+    "items_many": "{{count}} منتجاً",
+    "items_other": "{{count}} منتج",
+    "delivery": "التوصيل",
+    "free": "مجاني",
+    "total": "الإجمالي",
+    "reorder": "اطلب مجدداً",
+    "reorderMock": "إعادة الطلب ستفتح هنا",
+    "status": {
+      "delivered": "تم التوصيل",
+      "processing": "قيد المعالجة",
+      "cancelled": "ملغى"
+    }
+  },
+  "security": {
+    "title": "الأمان",
+    "connected": "متصل عبر {{provider}}",
+    "oauth": "OAuth 2.0 · لا يُخزَّن كلمة مرور",
+    "twoFactor": "المصادقة الثنائية",
+    "loginAlerts": "تنبيهات الدخول بالبريد",
+    "trustedDevices": "الأجهزة الموثوقة فقط",
+    "updated": "تم تحديث الإعداد",
+    "twoFactorUpdated": "تم تحديث 2FA",
+    "alertsUpdated": "تم تحديث التنبيهات",
+    "reviewSessions": "مراجعة الجلسات النشطة",
+    "sessionsReviewed": "تمت مراجعة الجلسات"
+  }
+}

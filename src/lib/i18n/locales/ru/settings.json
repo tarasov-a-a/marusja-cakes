@@ -1,0 +1,75 @@
+{
+  "title": "Настройки аккаунта",
+  "signInTitle": "Войдите",
+  "signInText": "Нужен аккаунт для настроек.",
+  "signOut": "Выйти",
+  "signedOut": "Вы вышли",
+  "tabs": {
+    "profile": "Профиль",
+    "orders": "Заказы",
+    "notifications": "Уведомления",
+    "payment": "Оплата",
+    "security": "Безопасность"
+  },
+  "profile": {
+    "title": "Ваш профиль",
+    "via": "через {{provider}}",
+    "fullName": "Имя",
+    "email": "Email",
+    "phone": "Телефон",
+    "phoneValue": "+1 (555) 248-0192",
+    "birthday": "День рождения (торт в подарок!)",
+    "birthdayValue": "14 марта",
+    "address": "Адрес доставки",
+    "addressValue": "42 Maple Lane, Cairo",
+    "save": "Сохранить",
+    "saved": "Профиль сохранён"
+  },
+  "notifications": {
+    "title": "Уведомления",
+    "seasonal": "Новые сезонные торты",
+    "orders": "Статус заказа",
+    "birthday": "Подарки на день рождения",
+    "newsletter": "Еженедельная рассылка",
+    "sms": "SMS о доставке",
+    "updated": "Настройка обновлена"
+  },
+  "payment": {
+    "title": "Способы оплаты",
+    "expires": "До {{exp}}",
+    "add": "Добавить карту",
+    "addMock": "Форма добавления карты"
+  },
+  "orders": {
+    "empty": "Заказов пока нет — ваш первый торт ждёт!",
+    "orderId": "Заказ №{{id}}",
+    "placedOn": "Оформлен {{date}}",
+    "items_one": "{{count}} позиция",
+    "items_few": "{{count}} позиции",
+    "items_many": "{{count}} позиций",
+    "items_other": "{{count}} позиций",
+    "delivery": "Доставка",
+    "free": "Бесплатно",
+    "total": "Итого",
+    "reorder": "Заказать снова",
+    "reorderMock": "Повторный заказ откроется здесь",
+    "status": {
+      "delivered": "Доставлен",
+      "processing": "В обработке",
+      "cancelled": "Отменён"
+    }
+  },
+  "security": {
+    "title": "Безопасность",
+    "connected": "Подключено через {{provider}}",
+    "oauth": "OAuth 2.0 · пароль не хранится",
+    "twoFactor": "Двухфакторная аутентификация",
+    "loginAlerts": "Уведомления о входе",
+    "trustedDevices": "Только доверенные устройства",
+    "updated": "Настройка обновлена",
+    "twoFactorUpdated": "2FA обновлена",
+    "alertsUpdated": "Уведомления обновлены",
+    "reviewSessions": "Активные сессии",
+    "sessionsReviewed": "Сессии проверены"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "about": "Small-batch layer cakes, baked at dawn and delivered to your door. No shortcuts, just butter and patience.",
+  "sweets": "Sweets",
+  "company": "Company",
+  "links": {
+    "signature": "Signature Cakes",
+    "chocolate": "Chocolate",
+    "seasonal": "Seasonal",
+    "gifts": "Gift Boxes",
+    "story": "Our Story",
+    "bakers": "Bakers",
+    "sustainability": "Sustainability",
+    "careers": "Careers"
+  },
+  "newsletterTitle": "Fresh from the oven",
+  "newsletterText": "Get a note when new cakes land.",
+  "emailPlaceholder": "you@email.com",
+  "copyright": "© 2026 Marusja Cakes · Made with butter in your neighbourhood"
+}

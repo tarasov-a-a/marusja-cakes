@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Nunito:wght@400..900&display=swap');
+
+:root {
+  --color-cream: #f6dca9;
+  --color-honey: #f0c080;
+  --color-caramel: #e0a070;
+  --color-cocoa: #5a3416;
+  --color-coffee: #8a5a30;
+  --color-blush: #e89a88;
+  --color-rose: #d77a66;
+  --color-sponge: #fbefd3;
+  --color-card-edge: #e8c68a;
+  --shadow-cocoa: 0 6px 0 #3d2310;
+  --font-serif: 'Fraunces', serif;
+  --font-sans: 'Nunito', sans-serif;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-cocoa);
+  background: var(--color-cream);
+}
+
+html[lang='ar'] body {
+  font-family: 'Nunito', 'Noto Sans Arabic', var(--font-sans);
+}
+
+::selection {
+  background: var(--color-rose);
+  color: #fff;
+}
+
+/* ── Shared keyframes (global so component-scoped styles can reference them) ── */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Responsive layout utilities shared across components ── */
+.heroGrid,
+.footerGrid {
+  display: grid;
+}
+
+.deskNav {
+  display: flex;
+}
+
+.mobOnly {
+  display: none;
+}
+
+@media (max-width: 880px) {
+  .heroGrid,
+  .footerGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .footerGrid {
+    gap: 30px !important;
+  }
+}
+
+@media (max-width: 939px) {
+  .deskNav {
+    display: none !important;
+  }
+
+  .mobOnly {
+    display: flex !important;
+  }
+}
+
+/* ── RTL helpers ── */
+[dir='rtl'] .flipDir {
+  transform: scaleX(-1);
+}
+
+[dir='rtl'] .cartBadge {
+  inset-inline-end: auto;
+  inset-inline-start: -5px;
+}

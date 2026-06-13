@@ -1,0 +1,32 @@
+{
+  "pancho-pineapple": {
+    "name": "Pancho Pineapple with walnut",
+    "tagline": "A slice of tropical comfort: juicy chocolate biscuit, rich walnuts, and bright pineapple wrapped in velvety cream.",
+    "desc": "Our flagship. A dome-shaped chocolate biscuit cake layered with soft cream, pineapple, and walnuts, finished with a chocolate drizzle."
+  },
+  "rose-velvet": {
+    "name": "Rose Velvet Cloud",
+    "tagline": "Raspberry & soft rose cream",
+    "desc": "A blush-pink velvet crumb folded with crushed raspberries and the gentlest rosewater cream. Light as the bow on a birthday gift."
+  },
+  "cocoa-grove": {
+    "name": "Cocoa Grove Torte",
+    "tagline": "Dark cocoa, salted caramel pools",
+    "desc": "Deep, dark, barely-sweet cocoa sponge with rivers of salted caramel and a glossy ganache shell. For the grown-up table."
+  },
+  "vanilla-bean": {
+    "name": "Vanilla Bean Sunhat",
+    "tagline": "Madagascar vanilla, buttercream ruffles",
+    "desc": "A tender vanilla bean sponge under a wide brim of hand-piped Swiss buttercream ruffles. The one everyone asks for."
+  },
+  "lemon-meadow": {
+    "name": "Lemon Meadow",
+    "tagline": "Sicilian lemon curd & basil",
+    "desc": "Bright, zippy Sicilian lemon curd between olive-oil sponge layers, with a whisper of garden basil. Sunshine on a plate."
+  },
+  "chestnut-hush": {
+    "name": "Chestnut Hush",
+    "tagline": "Roasted chestnut & maple",
+    "desc": "Roasted chestnut purée folded through a maple chiffon, blanketed in toasted-meringue. Autumn, distilled."
+  }
+}

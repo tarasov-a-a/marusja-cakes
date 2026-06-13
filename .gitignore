@@ -1,0 +1,18 @@
+# Logs
+*.log
+npm-debug.log*
+
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json

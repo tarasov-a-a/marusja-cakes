@@ -1,0 +1,21 @@
+{
+  "chooseSize": "اختر الحجم",
+  "sizes": {
+    "petite": "صغير",
+    "standard": "قياسي",
+    "grand": "كبير",
+    "petiteServes": "4 أشخاص",
+    "grandServes": "16 شخصاً",
+    "standardServes": "{{serves}} أشخاص"
+  },
+  "addToBox": "أضف للصندوق · E£{{total}}",
+  "meta": {
+    "serves": "تكفي",
+    "allergens": "مسببات الحساسية",
+    "keeps": "الحفظ",
+    "keepsValue": "4 أيام مبردة",
+    "delivery": "التوصيل",
+    "deliveryValue": "التالي بعد الساعة 11 صباحًا"
+  },
+  "related": "قد يعجبك أيضاً…"
+}
