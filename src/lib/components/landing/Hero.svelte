@@ -207,4 +207,10 @@
     display: block;
     opacity: 0.85;
   }
+
+  @media (max-width: 880px) {
+    .section {
+      padding-block-start: 10px;
+    }
+  }
 </style>
