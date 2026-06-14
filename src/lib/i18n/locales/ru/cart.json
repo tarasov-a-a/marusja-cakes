@@ -18,8 +18,8 @@
   "sendOrderTitle": "Отправьте заказ через",
   "whatsapp": "WhatsApp",
   "telegram": "Telegram",
-  "telegramCopied": "Заказ скопирован — вставьте его в чат",
-  "telegramHint": "Мы скопируем детали заказа, и вы сможете вставить их в чат.",
   "orderHeading": "Новый заказ · Marusja Cakes",
-  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}"
+  "orderIntro": "Здравствуйте, Маруся! Очень хочу заказать:",
+  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}",
+  "orderThanks": "Спасибо за заказ — мы счастливы печь для вас! 💛"
 }

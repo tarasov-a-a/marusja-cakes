@@ -18,8 +18,8 @@
   "sendOrderTitle": "أرسل طلبك عبر",
   "whatsapp": "WhatsApp",
   "telegram": "Telegram",
-  "telegramCopied": "تم نسخ الطلب — الصقه في المحادثة",
-  "telegramHint": "سننسخ تفاصيل الطلب ويمكنك لصقها في المحادثة.",
   "orderHeading": "طلب جديد · Marusja Cakes",
-  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}"
+  "orderIntro": "مرحباً ماروسيا! هذا ما أودّ طلبه:",
+  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}",
+  "orderThanks": "شكراً على طلبك — يسعدنا أن نخبز لك! 💛"
 }

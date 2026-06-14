@@ -65,14 +65,15 @@ green, and — if behaviour changed — the relevant `test:e2e` spec green.
 - [order.ts](src/lib/order.ts) builds the order as locale-aware standard Markdown
   (`buildOrderMarkdown`, reusing `localizeProduct` + `formatPrice` + the `cart:*`
   keys) and turns it into links (`whatsAppHref` → `wa.me/<number>?text=…`,
-  `telegramChatUrl` → `t.me/<username>`).
+  `telegramHref` → `t.me/<username>?text=…`). Both are plain `<a href>` links that
+  pre-fill the chat with the order — the customer just hits Send.
 - [messenger.ts](src/lib/messenger.ts) is the **converter half** of the
   `messenger-send` skill, vendored as dependency-free pure functions:
-  `toWhatsAppText` (the WhatsApp deep link) and `toPlainText` (the clipboard copy).
-  The skill's *senders* are deliberately omitted — they need bot tokens + a
-  recipient chat id + a server, which this app doesn't have.
-- **Telegram can't pre-fill a DM to a personal username**, so that button copies
-  the order to the clipboard, opens the chat, and flashes a "paste it" toast.
+  `toWhatsAppText` (WhatsApp deep link — keeps `*bold*` markers WhatsApp renders)
+  and `toPlainText` (Telegram deep link — strips markers, since a `t.me?text=`
+  draft isn't auto-formatted). The skill is otherwise browser-first too (it builds
+  the same deep links); its *server* senders (Bot API / WhatsApp Cloud API) are
+  out of scope here — they'd need tokens + a server, which this app doesn't have.
 - Owner handles live in [contacts.ts](src/lib/contacts.ts) (`WHATSAPP_NUMBER`,
   `TELEGRAM_USERNAME`), defaulting to the live accounts with optional
   `VITE_WHATSAPP_NUMBER` / `VITE_TELEGRAM_USERNAME` build-time overrides. The

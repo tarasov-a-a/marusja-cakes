@@ -5,14 +5,15 @@
  * The skill's *senders* (`sendTelegram`/`sendWhatsApp`) are deliberately omitted:
  * they need bot tokens + a recipient chat id and POST to Telegram/Meta, which is
  * impossible and unsafe in this static, no-backend client app. We keep only the
- * pure, browser-safe converters and add `toPlainText` for clipboard use.
+ * pure, browser-safe converters and add `toPlainText`.
  *
  * Write the order message ONCE in standard Markdown; render the right flavor per
  * destination:
  *   - `toWhatsAppText`  → `*bold*` / `_italic_` / ```mono```, `[l](u)` → `l (u)`
  *     (used in the `wa.me?text=` deep link — WhatsApp renders these markers).
- *   - `toPlainText`     → emphasis markers stripped (Telegram does NOT auto-format
- *     pasted `*bold*`, so the clipboard copy must be clean readable text).
+ *   - `toPlainText`     → emphasis markers stripped (used in the `t.me?text=`
+ *     deep link — Telegram drops the prefilled text into the compose box as a
+ *     draft and does NOT auto-format `*bold*`, so it must be clean plain text).
  */
 
 type InlineToken =

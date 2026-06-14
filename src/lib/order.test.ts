@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { WHATSAPP_NUMBER } from './contacts';
 import type { TranslateFn } from './i18n';
-import { buildOrderMarkdown, telegramChatUrl, whatsAppHref } from './order';
+import { buildOrderMarkdown, telegramHref, whatsAppHref } from './order';
 import type { CartItem, Product } from './types';
 
 /** Minimal translator: known cart keys + `{{var}}` interpolation; else echoes the key. */
@@ -37,11 +37,11 @@ const cart: CartItem[] = [{ key: 'test-cake', product, qty: 2, size: 'Standard',
 describe('buildOrderMarkdown', () => {
   it('renders heading, per-item line totals, and a bold total', () => {
     const md = buildOrderMarkdown(cart, t, { subtotal: 200, delivery: 150, total: 350 });
-    expect(md).toContain('# New order');
-    expect(md).toContain('Test Cake · Standard × 2 — E£200.00');
+    expect(md).toContain('# 🎂 New order');
+    expect(md).toContain('🎂 Test Cake · Standard × 2 — E£200.00');
     expect(md).toContain('Subtotal: E£200.00');
-    expect(md).toContain('Delivery: E£150.00');
-    expect(md).toContain('**Total: E£350.00**');
+    expect(md).toContain('🚚 Delivery: E£150.00');
+    expect(md).toContain('**🎉 Total: E£350.00**');
   });
 
   it('labels free delivery instead of a price when delivery is 0', () => {
@@ -60,8 +60,11 @@ describe('whatsAppHref', () => {
   });
 });
 
-describe('telegramChatUrl', () => {
-  it('builds a t.me link from a username', () => {
-    expect(telegramChatUrl('anatolii_tarasov_a')).toBe('https://t.me/anatolii_tarasov_a');
+describe('telegramHref', () => {
+  it('builds a t.me link with the plain-text order pre-filled', () => {
+    const href = telegramHref('marusjagame_zakaz', '# New order\n**Total: E£10**');
+    expect(href.startsWith('https://t.me/marusjagame_zakaz?text=')).toBe(true);
+    const text = decodeURIComponent(href.split('?text=')[1]);
+    expect(text).toBe('New order\nTotal: E£10');
   });
 });
