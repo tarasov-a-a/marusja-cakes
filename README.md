@@ -135,7 +135,7 @@ handles; override per build via `.env`:
 | Var | Default | Used for |
 |-----|---------|----------|
 | `VITE_WHATSAPP_NUMBER` | `381665814358` | `wa.me/<number>` (digits only, no `+`) |
-| `VITE_TELEGRAM_USERNAME` | `anatolii_tarasov_a` | `t.me/<username>` (no leading `@`) |
+| `VITE_TELEGRAM_USERNAME` | `marusjagame_zakaz` | `t.me/<username>` (no leading `@`) |
 
 ## Project structure
 

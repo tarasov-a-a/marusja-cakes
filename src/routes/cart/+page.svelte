@@ -1,15 +1,13 @@
 <script lang="ts">
-  import { ArrowRight, Info, MessageCircle, Send } from 'lucide-svelte';
-  import { browser } from '$app/environment';
+  import { ArrowRight, MessageCircle, Send } from 'lucide-svelte';
   import CartLine from '$lib/components/cart/CartLine.svelte';
   import Button from '$lib/components/ui/Button.svelte';
   import CakeArt from '$lib/components/ui/CakeArt.svelte';
   import { TELEGRAM_USERNAME, WHATSAPP_NUMBER } from '$lib/contacts';
   import { formatPrice } from '$lib/currency';
   import { t } from '$lib/i18n';
-  import { toPlainText } from '$lib/messenger';
-  import { buildOrderMarkdown, telegramChatUrl, whatsAppHref } from '$lib/order';
-  import { cart, flash, subtotal } from '$lib/stores/shop';
+  import { buildOrderMarkdown, telegramHref, whatsAppHref } from '$lib/order';
+  import { cart, subtotal } from '$lib/stores/shop';
 
   let delivery = $derived($subtotal > 1500 || $subtotal === 0 ? 0 : 150);
   let total = $derived($subtotal + delivery);
@@ -17,21 +15,9 @@
   let orderMd = $derived(
     buildOrderMarkdown($cart, $t, { subtotal: $subtotal, delivery, total }),
   );
+  // Both deep links pre-fill the chat with the order; the customer just hits Send.
   let waHref = $derived(whatsAppHref(WHATSAPP_NUMBER, orderMd));
-
-  // Telegram links to a personal username can't pre-fill text, so copy the order
-  // to the clipboard and open the chat for the customer to paste.
-  async function sendViaTelegram(): Promise<void> {
-    if (browser) {
-      try {
-        await navigator.clipboard.writeText(toPlainText(orderMd));
-      } catch {
-        // Clipboard blocked (permissions / insecure context) — open the chat anyway.
-      }
-      window.open(telegramChatUrl(TELEGRAM_USERNAME), '_blank', 'noopener');
-    }
-    flash($t('cart:telegramCopied'));
-  }
+  let tgHref = $derived(telegramHref(TELEGRAM_USERNAME, orderMd));
 </script>
 
 <svelte:head>
@@ -92,13 +78,11 @@
                 <MessageCircle size={18} /> {$t('cart:whatsapp')}
               </Button>
             </a>
-            <Button variant="telegram" fullWidth onclick={sendViaTelegram}>
-              <Send size={18} /> {$t('cart:telegram')}
-              <span class="tgInfo">
-                <Info size={16} />
-                <span class="tgTip" role="tooltip">{$t('cart:telegramHint')}</span>
-              </span>
-            </Button>
+            <a href={tgHref} target="_blank" rel="noopener noreferrer" class="sendLink">
+              <Button variant="telegram" fullWidth>
+                <Send size={18} /> {$t('cart:telegram')}
+              </Button>
+            </a>
           </div>
         </div>
         <a href="/" class="keepShopping">{$t('cart:keepShopping')}</a>
@@ -293,58 +277,6 @@
   .sendLink {
     display: block;
     text-decoration: none;
-  }
-
-  /* Info icon sits next to the label and reveals the tooltip on hover/focus. */
-  .tgInfo {
-    position: relative;
-    display: inline-flex;
-    cursor: help;
-  }
-
-  /* Dim only the icon — not the tooltip child (opacity on .tgInfo would cap it too). */
-  .tgInfo :global(svg) {
-    opacity: 0.85;
-  }
-
-  .tgTip {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: max-content;
-    max-width: 220px;
-    padding: 10px 13px;
-    border-radius: 12px;
-    background: var(--color-cocoa);
-    color: var(--color-sponge);
-    box-shadow: 0 8px 24px rgba(43, 25, 10, 0.28);
-    font-size: 12.5px;
-    font-weight: 600;
-    line-height: 1.4;
-    text-align: center;
-    white-space: normal;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.15s ease, visibility 0.15s ease;
-    z-index: 10;
-  }
-
-  /* Little arrow pointing down at the icon. */
-  .tgTip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 6px solid transparent;
-    border-top-color: var(--color-cocoa);
-  }
-
-  .tgInfo:hover .tgTip,
-  .tgInfo:focus-within .tgTip {
-    opacity: 1;
-    visibility: visible;
   }
 
   @media (max-width: 640px) {

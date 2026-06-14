@@ -11,4 +11,4 @@
 export const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '381665814358';
 
 /** Telegram username without the leading `@` — for `t.me/<username>`. */
-export const TELEGRAM_USERNAME = import.meta.env.VITE_TELEGRAM_USERNAME || 'anatolii_tarasov_a';
+export const TELEGRAM_USERNAME = import.meta.env.VITE_TELEGRAM_USERNAME || 'marusjagame_zakaz';

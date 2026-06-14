@@ -18,8 +18,8 @@
   "sendOrderTitle": "Send your order in",
   "whatsapp": "WhatsApp",
   "telegram": "Telegram",
-  "telegramCopied": "Order copied — paste it in the chat",
-  "telegramHint": "We'll copy the order details and you can paste them into the chat.",
   "orderHeading": "New order · Marusja Cakes",
-  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}"
+  "orderIntro": "Hi Marusja! Here's what I'd love to order:",
+  "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}",
+  "orderThanks": "Thank you for your order — we're delighted to be baking for you! 💛"
 }
