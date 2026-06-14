@@ -1,13 +1,30 @@
 import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { svelteTesting } from '@testing-library/svelte/vite';
 import path from 'node:path';
+import { loadEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
+
+// Mirror the PRODUCTION flag config in unit tests. `vite build` inlines
+// `import.meta.env.VITE_FEATURE_*` from `.env.production`; Vitest runs in `test`
+// mode and would otherwise read `.env`/code defaults instead. We load the same
+// env the production build resolves and statically replace each flag via
+// `define`, so `features.*` under Vitest matches what the deployed site ships.
+// (`loadEnv('production', …)` follows the real build's precedence: `.env.production`
+// wins over `.env`/`.env.local`.)
+const prodFlags = loadEnv('production', process.cwd(), 'VITE_FEATURE_');
+const flagDefines = Object.fromEntries(
+  Object.entries(prodFlags).map(([key, value]) => [
+    `import.meta.env.${key}`,
+    JSON.stringify(value),
+  ]),
+);
 
 // Standalone Vitest config (does NOT use the full `sveltekit()` plugin, which
 // pulls in the server router and breaks unit-level component mounting). We wire
 // the Svelte compiler + Testing Library plugin directly, alias `$lib`/`$app`,
 // and run everything under jsdom.
 export default defineConfig({
+  define: flagDefines,
   plugins: [svelte({ preprocess: vitePreprocess() }), svelteTesting()],
   resolve: {
     alias: {

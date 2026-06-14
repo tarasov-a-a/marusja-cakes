@@ -13,10 +13,14 @@
   let { children }: { children: Snippet } = $props();
 
   // Keep <html lang/dir> in sync with the active locale and persist the choice.
+  // `data-hydrated` flips to "true" only once this client-only effect runs, i.e.
+  // after hydration — E2E navigation waits on it so clicks never race ahead of
+  // the interactive handlers (see e2e/fixtures.ts).
   $effect(() => {
     if (!browser) return;
     document.documentElement.lang = $locale;
     document.documentElement.dir = $dir;
+    document.documentElement.dataset.hydrated = 'true';
     localStorage.setItem(STORAGE_KEY, $locale);
   });
 </script>
