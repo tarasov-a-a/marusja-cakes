@@ -11,6 +11,8 @@ plain HTML/CSS/JS at build time — no server required.
 - Scoped component styles + a small global design-token sheet (`src/app.css`)
 - Lightweight reactive **i18n** store (English, Russian, Arabic with RTL) — supports
   `{{var}}` interpolation and CLDR plurals via `Intl.PluralRules`
+- Reactive **currency** store (Egyptian Pounds / Russian Rubles) — prices authored
+  per-currency, formatted live, switchable independently of language
 - **Svelte stores** for cart / auth / toast (replacing Zustand)
 - **Build-time feature flags** (`VITE_FEATURE_*`, statically inlined — prerender-safe)
 - **`lucide-svelte`** icons
@@ -142,6 +144,7 @@ handles; override per build via `.env`:
 - `src/routes/` — file-based routes; `+layout.svelte` is the app shell
 - `src/lib/components/` — `ui`, `layout`, `landing`, `product`, `auth`, `cart`, `settings`
 - `src/lib/i18n/` — translator store + `locales/{en,ru,ar}/*.json`
+- `src/lib/currency.ts` — currency store + per-currency `Money` formatting (EGP/RUB)
 - `src/lib/stores/shop.ts` — cart / user / toast state
 - `src/lib/flags.ts` — build-time feature flags (`VITE_FEATURE_*`)
 - `src/lib/data/` — locale-neutral product & order records
