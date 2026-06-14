@@ -8,17 +8,19 @@ export const cart = writable<CartItem[]>([]);
 export function addToCart(
   product: Product,
   qty = 1,
-  size = 'Standard',
+  size = '',
   price?: number,
 ): void {
-  const unitPrice = price ?? product.price;
+  const headline = product.sizes[0];
+  const unitPrice = price ?? headline.price;
+  const sizeLabel = size || headline.size;
   cart.update((items) => {
     const key = product.id;
     const found = items.find((i) => i.key === key);
     if (found) {
       return items.map((i) => (i.key === key ? { ...i, qty: i.qty + qty } : i));
     }
-    return [...items, { key, product, qty, size, price: unitPrice }];
+    return [...items, { key, product, qty, size: sizeLabel, price: unitPrice }];
   });
 }
 

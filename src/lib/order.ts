@@ -20,7 +20,7 @@ export interface OrderTotals {
 
 /**
  * Build the order as standard Markdown: a cheerful 🎂 heading, a warm intro, one
- * 🎂-bulleted line per item with its line total, then subtotal / 🚚 delivery /
+ * 🍰-bulleted line per item with its line total, then subtotal / 🚚 delivery /
  * **🎉 total** and a thank-you sign-off. Reuses the existing `cart:*` i18n keys
  * so the words follow the active locale; the emoji are language-neutral message
  * decoration (kept here, not in i18n, so the on-page summary stays plain).
@@ -40,7 +40,7 @@ export function buildOrderMarkdown(
   for (const item of cart) {
     const name = localizeProduct(item.product, t).name;
     lines.push(
-      `🎂 ${t('cart:orderLine', {
+      `🍰 ${t('cart:orderLine', {
         name,
         size: item.size,
         qty: item.qty,

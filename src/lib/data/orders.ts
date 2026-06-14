@@ -14,9 +14,9 @@ const ORDER_TEMPLATES: OrderTemplate[] = [
     date: '2026-05-18T14:30:00.000Z',
     status: 'delivered',
     items: [
-      { productId: 'pancho-pineapple', qty: 1, size: 'Standard', price: 900 },
-      { productId: 'rose-velvet', qty: 1, size: 'Petite', price: 700 },
-      { productId: 'cocoa-grove', qty: 1, size: 'Petite', price: 750 },
+      { productId: 'pancho-pineapple', qty: 1, size: 'Full cake', price: 900 },
+      { productId: 'rose-velvet', qty: 1, size: 'Half cake', price: 400 },
+      { productId: 'cocoa-grove', qty: 1, size: 'Slice', price: 95 },
     ],
     delivery: 0,
   },
@@ -24,7 +24,7 @@ const ORDER_TEMPLATES: OrderTemplate[] = [
     orderNumber: 'SB-0987',
     date: '2026-04-02T10:15:00.000Z',
     status: 'processing',
-    items: [{ productId: 'cocoa-grove', qty: 1, size: 'Grand', price: 750 }],
+    items: [{ productId: 'cocoa-grove', qty: 1, size: 'Full cake', price: 750 }],
     delivery: 100,
   },
   {
@@ -32,8 +32,8 @@ const ORDER_TEMPLATES: OrderTemplate[] = [
     date: '2026-02-14T09:00:00.000Z',
     status: 'cancelled',
     items: [
-      { productId: 'vanilla-bean', qty: 2, size: 'Standard', price: 700 },
-      { productId: 'lemon-meadow', qty: 1, size: 'Standard', price: 500 },
+      { productId: 'vanilla-bean', qty: 2, size: 'Half cake', price: 400 },
+      { productId: 'lemon-meadow', qty: 1, size: 'Full cake', price: 500 },
     ],
     delivery: 150,
   },

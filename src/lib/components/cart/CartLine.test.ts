@@ -12,7 +12,7 @@ const item: CartItem = {
   key: 'pancho-pineapple',
   product: getProductById('pancho-pineapple')!,
   qty: 2,
-  size: 'Standard',
+  size: 'Full cake',
   price: 900,
 };
 

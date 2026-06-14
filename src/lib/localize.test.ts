@@ -15,7 +15,7 @@ describe('localize', () => {
       const result = localizeProduct(product, echo);
       expect(result).toMatchObject({
         id: product.id,
-        price: product.price,
+        sizes: product.sizes,
         rating: product.rating,
         grad: product.grad,
         category: product.category,

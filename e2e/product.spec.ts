@@ -1,6 +1,10 @@
 import { test, expect, PRODUCTS, price } from './fixtures';
 
 const pancho = PRODUCTS.pancho;
+const rose = PRODUCTS.rose;
+// Per-size prices for rose-velvet, mirrored from src/lib/data/products.ts.
+const ROSE_FULL = 700;
+const ROSE_HALF = 400;
 
 test.describe('Product detail', () => {
   test.beforeEach(async ({ app }) => {
@@ -15,17 +19,9 @@ test.describe('Product detail', () => {
     await expect(page.getByText(/214 reviews/)).toBeVisible();
   });
 
-  test('Standard size is selected by default and priced at the base price', async ({ app }) => {
-    await expect(app.sizeButton('Standard')).toHaveAttribute('aria-pressed', 'true');
+  test('the full cake is selected by default and priced at the full price', async ({ app }) => {
+    await expect(app.sizeButton('Full cake')).toHaveAttribute('aria-pressed', 'true');
     await expect(app.addToCartButton).toContainText(price(pancho.price)); // E£900
-  });
-
-  test('choosing a larger size updates the active state and the total', async ({ app }) => {
-    await app.sizeButton('Grand').click();
-    await expect(app.sizeButton('Grand')).toHaveAttribute('aria-pressed', 'true');
-    await expect(app.sizeButton('Standard')).toHaveAttribute('aria-pressed', 'false');
-    // Grand delta is +18 → E£918 for a single cake.
-    await expect(app.addToCartButton).toContainText(price(pancho.price + 18));
   });
 
   test('quantity stepper increments and clamps at a minimum of 1', async ({ app }) => {
@@ -60,6 +56,31 @@ test.describe('Product detail', () => {
   });
 });
 
+test.describe('Product detail — size selection', () => {
+  // rose-velvet is offered in all three formats — pancho-pineapple is full-only.
+  test.beforeEach(async ({ app }) => {
+    await app.gotoProduct(rose.id);
+  });
+
+  test('all three formats are offered for a multi-size cake', async ({ app }) => {
+    await expect(app.sizeButton('Full cake')).toBeVisible();
+    await expect(app.sizeButton('Half cake')).toBeVisible();
+    await expect(app.sizeButton('Slice')).toBeVisible();
+  });
+
+  test('full cake is the default selection and headline price', async ({ app }) => {
+    await expect(app.sizeButton('Full cake')).toHaveAttribute('aria-pressed', 'true');
+    await expect(app.addToCartButton).toContainText(price(ROSE_FULL)); // E£700
+  });
+
+  test('choosing a smaller size updates the active state and the total', async ({ app }) => {
+    await app.sizeButton('Half cake').click();
+    await expect(app.sizeButton('Half cake')).toHaveAttribute('aria-pressed', 'true');
+    await expect(app.sizeButton('Full cake')).toHaveAttribute('aria-pressed', 'false');
+    await expect(app.addToCartButton).toContainText(price(ROSE_HALF)); // E£400
+  });
+});
+
 test.describe('Product detail — edge cases', () => {
   test('an unknown product id returns a 404', async ({ page }) => {
     const response = await page.goto('/product/this-cake-does-not-exist/');
@@ -72,14 +93,16 @@ test.describe('Product detail — edge cases', () => {
     app,
     page,
   }) => {
-    await app.gotoProduct(pancho.id);
+    await app.gotoProduct(rose.id);
     await app.qtyPlus.click();
-    await app.sizeButton('Grand').click();
+    await app.sizeButton('Half cake').click();
     await expect(app.qtyValue).toHaveText('2');
+    await expect(app.sizeButton('Half cake')).toHaveAttribute('aria-pressed', 'true');
 
     // Use the related-products grid to navigate client-side to another product.
     await page.locator('.related .card').first().getByRole('heading').click();
     await expect(app.qtyValue).toHaveText('1');
-    await expect(app.sizeButton('Standard')).toHaveAttribute('aria-pressed', 'true');
+    // The newly opened cake defaults back to its full-cake format.
+    await expect(app.sizeButton('Full cake')).toHaveAttribute('aria-pressed', 'true');
   });
 });

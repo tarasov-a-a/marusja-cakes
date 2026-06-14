@@ -22,23 +22,22 @@ const t: TranslateFn = (key, params) => {
 
 const product: Product = {
   id: 'test-cake',
-  price: 100,
   rating: 5,
   reviews: 1,
   category: ['classic'],
   grad: ['#000', '#fff'],
   tags: ['classic'],
   allergensKey: 'none',
-  servesKey: 'small',
+  sizes: [{ size: 'full', price: 100, servesKey: 'small' }],
 };
 
-const cart: CartItem[] = [{ key: 'test-cake', product, qty: 2, size: 'Standard', price: 100 }];
+const cart: CartItem[] = [{ key: 'test-cake', product, qty: 2, size: 'Full cake', price: 100 }];
 
 describe('buildOrderMarkdown', () => {
   it('renders heading, per-item line totals, and a bold total', () => {
     const md = buildOrderMarkdown(cart, t, { subtotal: 200, delivery: 150, total: 350 });
     expect(md).toContain('# 🎂 New order');
-    expect(md).toContain('🎂 Test Cake · Standard × 2 — E£200.00');
+    expect(md).toContain('🍰 Test Cake · Full cake × 2 — E£200.00');
     expect(md).toContain('Subtotal: E£200.00');
     expect(md).toContain('🚚 Delivery: E£150.00');
     expect(md).toContain('**🎉 Total: E£350.00**');

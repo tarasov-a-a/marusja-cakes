@@ -3,6 +3,7 @@
   import { Plus, Star } from 'lucide-svelte';
   import ProductMedia from '$lib/components/product/ProductMedia.svelte';
   import { formatPrice } from '$lib/currency';
+  import { defaultSize, headlinePrice } from '$lib/data/products';
   import { t } from '$lib/i18n';
   import { addToCart, flash } from '$lib/stores/shop';
   import type { LocalizedProduct } from '$lib/types';
@@ -61,14 +62,15 @@
     <h3 class="name">{product.name}</h3>
     <p class="tagline">{product.tagline}</p>
     <div class="footer">
-      <div class="price">{formatPrice(product.price)}</div>
+      <div class="price">{formatPrice(headlinePrice(product))}</div>
       <button
         type="button"
         class="addBtn"
         aria-label={$t('common:a11y.addToCart', { name: product.name })}
         onclick={(e) => {
           e.stopPropagation();
-          addToCart(product);
+          const headline = defaultSize(product);
+          addToCart(product, 1, $t(`product:sizes.${headline.size}`), headline.price);
           flash($t('cart:added', { name: product.name }));
         }}
       >

@@ -10,37 +10,32 @@
   import { t } from '$lib/i18n';
   import { localizeProduct, localizeProducts } from '$lib/localize';
   import { addToCart, flash } from '$lib/stores/shop';
+  import type { SizeKey } from '$lib/types';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
 
-  type SizeKey = 'petite' | 'standard' | 'grand';
-  const SIZE_DELTAS: Record<SizeKey, number> = { petite: -8, standard: 0, grand: 18 };
-
   let qty = $state(1);
-  let size = $state<SizeKey>('standard');
+  // Selected format key; the $effect below pins it to the product's default size.
+  let size = $state<SizeKey>('full');
 
   // Reset selection when navigating between products.
   $effect(() => {
-    data.product.id;
     qty = 1;
-    size = 'standard';
+    size = data.product.sizes[0].size;
   });
 
   let product = $derived(data.product);
   let localized = $derived(localizeProduct(product, $t));
 
+  // Available formats come straight from the product configuration — a cake is
+  // only offered in the sizes it lists (e.g. pancho-pineapple is full-cake only).
   let sizes = $derived(
-    (['petite', 'standard', 'grand'] as const).map((key) => ({
-      key,
-      label: $t(`product:sizes.${key}`),
-      sub:
-        key === 'petite'
-          ? $t('product:sizes.petiteServes')
-          : key === 'grand'
-            ? $t('product:sizes.grandServes')
-            : $t('product:sizes.standardServes', { serves: localized.serves }),
-      delta: SIZE_DELTAS[key],
+    product.sizes.map((opt) => ({
+      key: opt.size,
+      label: $t(`product:sizes.${opt.size}`),
+      sub: $t('product:sizes.serves', { serves: $t(`serves:${opt.servesKey}`) }),
+      price: opt.price,
     })),
   );
 
@@ -50,11 +45,12 @@
       .slice(0, 3),
   );
 
-  let sizePrice = $derived(product.price + (sizes.find((s) => s.key === size)?.delta ?? 0));
-  let sizeLabel = $derived(sizes.find((s) => s.key === size)?.label ?? size);
+  let selected = $derived(product.sizes.find((s) => s.size === size) ?? product.sizes[0]);
+  let sizePrice = $derived(selected.price);
+  let sizeLabel = $derived($t(`product:sizes.${selected.size}`));
 
   let metaRows = $derived([
-    ['serves', localized.serves],
+    ['serves', $t(`serves:${selected.servesKey}`)],
     ['allergens', localized.allergens],
     ['keeps', $t('product:meta.keepsValue')],
     ['delivery', $t('product:meta.deliveryValue')],
@@ -107,7 +103,7 @@
             >
               <div class="sizeName">{s.label}</div>
               <div class="sizeSub">{s.sub}</div>
-              <div class="sizePrice">{formatPrice(product.price + s.delta)}</div>
+              <div class="sizePrice">{formatPrice(s.price)}</div>
             </button>
           {/each}
         </div>
@@ -284,7 +280,8 @@
 
   .sizes {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* One column per offered size — a cake made in a single format fills the row. */
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     gap: 10px;
     margin-bottom: 22px;
   }
