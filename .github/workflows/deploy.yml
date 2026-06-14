@@ -1,0 +1,93 @@
+name: Deploy
+
+# Builds the static site and publishes it to the GCS bucket fronted by Cloud CDN
+# (global HTTPS load balancer → backend bucket → gs://marusja-cakes-web).
+# Authenticates to GCP keylessly via Workload Identity Federation — no secrets.
+#
+# Non-secret identifiers come from repo *Variables* (Settings → Secrets and
+# variables → Actions → Variables):
+#   GCP_PROJECT       marusja-cakes
+#   GCP_WIF_PROVIDER  projects/867862583/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+#   GCP_DEPLOY_SA     github-deployer@marusja-cakes.iam.gserviceaccount.com
+#   GCS_BUCKET        marusja-cakes-web
+#   GCP_URL_MAP       marusja-cakes-lb
+
+on:
+  push:
+    branches: [main]
+  # Allow manual redeploys from the Actions tab.
+  workflow_dispatch:
+
+# One deploy at a time; let an in-progress deploy finish (don't cancel mid-upload).
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & publish to GCS + Cloud CDN
+    runs-on: ubuntu-latest
+
+    # Required for Workload Identity Federation: mint the OIDC token.
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Authenticate to Google Cloud (keyless WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ vars.GCP_PROJECT }}
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      # --- Publish -------------------------------------------------------------
+      # Cutover is the CDN invalidation at the end, so we upload everything first
+      # (no delete) — in-flight visitors keep hitting old hashed assets until the
+      # cache flips. Hashed assets in _app/immutable get a 1-year immutable cache;
+      # HTML + version.json are never cached so an invalidation takes effect at once.
+
+      - name: Upload build to bucket
+        run: |
+          gcloud storage rsync build "gs://${{ vars.GCS_BUCKET }}" \
+            --recursive
+
+      - name: Set long cache on immutable hashed assets
+        run: |
+          gcloud storage objects update \
+            "gs://${{ vars.GCS_BUCKET }}/_app/immutable/**" \
+            --cache-control="public, max-age=31536000, immutable"
+
+      - name: Set no-cache on HTML and version manifest
+        run: |
+          gcloud storage objects update \
+            "gs://${{ vars.GCS_BUCKET }}/**.html" \
+            --cache-control="no-cache, max-age=0, must-revalidate"
+          gcloud storage objects update \
+            "gs://${{ vars.GCS_BUCKET }}/_app/version.json" \
+            --cache-control="no-cache, max-age=0, must-revalidate"
+
+      - name: Invalidate CDN cache (atomic cutover for HTML)
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache "${{ vars.GCP_URL_MAP }}" \
+            --path="/*" \
+            --async
+
+      - name: Deploy summary
+        run: |
+          echo "Published to gs://${{ vars.GCS_BUCKET }} and invalidated CDN." >> "$GITHUB_STEP_SUMMARY"
+          echo "Live at https://marusja-cakes.com/ (allow a moment for cache refill)." >> "$GITHUB_STEP_SUMMARY"

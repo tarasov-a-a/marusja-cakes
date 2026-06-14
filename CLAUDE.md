@@ -189,6 +189,38 @@ Two layers with a deliberate division of labour — respect the boundary.
   `VITE_FEATURE_AUTH=true npm run test:e2e`. Caveat: `env` is ignored when a local
   dev server is reused (`reuseExistingServer`) — that server keeps its own flags.
 
+## Deployment & CI/CD
+
+Production hosting is **GCS + Cloud CDN** in GCP project `marusja-cakes`, served
+at **<https://marusja-cakes.com>**. The static `build/` is mirrored to a bucket
+fronted by a global external HTTPS load balancer with Cloud CDN; the bucket lives
+in **`me-central1` (Doha)** to minimise cache-miss latency for users in Egypt.
+This is the deploy target for the no-backend static output — it does **not**
+change the prerender/no-server rules above.
+
+- **GitHub Actions** ([.github/workflows](.github/workflows)) drives it:
+  - [ci.yml](.github/workflows/ci.yml) — on PRs + push to `main`: `npm run check`,
+    `npm test`, `npm run build`, and the Playwright E2E suite (the green-light bar).
+  - [deploy.yml](.github/workflows/deploy.yml) — on push to `main` (+ manual
+    dispatch): build → `gcloud storage rsync build` → set cache headers → CDN
+    invalidate. Runs on Node 22.
+- **Auth is keyless Workload Identity Federation** — no SA keys in the repo.
+  Deploy reads non-secret identifiers from GitHub Actions **repository Variables**
+  (`GCP_PROJECT`, `GCP_WIF_PROVIDER`, `GCP_DEPLOY_SA`, `GCS_BUCKET`, `GCP_URL_MAP`).
+  Don't add a service-account JSON key or move these to Secrets.
+- **Cache strategy is load-bearing — preserve it.** Hashed `_app/immutable/**`
+  get `public, max-age=31536000, immutable`; HTML + `_app/version.json` get
+  `no-cache, must-revalidate`. Deploy uploads **without deleting** old assets,
+  then the **CDN invalidation is the atomic cutover** — so in-flight visitors
+  never request a just-deleted asset. Don't add `--delete-unmatched-destination-objects`
+  to the deploy step without accounting for that.
+- The deploy SA's permissions are least-privilege: `roles/storage.objectAdmin`
+  on the bucket + a custom `cdnInvalidator` role (`compute.urlMaps.invalidateCache`).
+  Prefer extending the custom role over granting broad `loadBalancerAdmin`.
+- Infra/DNS (LB, backend bucket, managed cert, Cloud DNS zone `marusja-cakes-com`)
+  was provisioned via `gcloud`; full topology and the manual-publish recipe live in
+  [README.md](README.md#deployment--cicd).
+
 ## Conventions & guardrails
 
 - **TypeScript strict** ([tsconfig.json](tsconfig.json)) with `checkJs`. Config
