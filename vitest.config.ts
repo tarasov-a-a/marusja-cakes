@@ -45,7 +45,7 @@ export default defineConfig({
       // The unit suite owns the LOGIC layer (pure functions, stores, data,
       // actions, i18n, route loaders) plus the components that have dedicated
       // unit tests. Presentational page/layout components (Header, Footer,
-      // ProductCard, ImageGallery, route `+page.svelte` shells, …) are
+      // ProductCard, route `+page.svelte` shells, …) are
       // intentionally OUT of unit scope — they are best covered by E2E
       // (Playwright). Scoping the gate here keeps the 80% threshold meaningful
       // instead of measuring untested view code.
@@ -59,6 +59,7 @@ export default defineConfig({
         'src/lib/components/ui/Spinner.svelte',
         'src/lib/components/ui/Field.svelte',
         'src/lib/components/ui/Toast.svelte',
+        'src/lib/components/ui/ImageGallery.svelte',
         'src/lib/components/cart/CartLine.svelte',
         'src/lib/components/auth/AuthModal.svelte',
         'src/lib/components/auth/ProviderGlyph.svelte',
