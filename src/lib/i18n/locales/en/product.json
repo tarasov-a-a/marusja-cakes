@@ -6,7 +6,7 @@
     "slice": "Slice",
     "serves": "serves {{serves}}"
   },
-  "addToCart": "Add to cart · E£{{total}}",
+  "addToCart": "Add to cart · {{total}}",
   "meta": {
     "serves": "Serves",
     "allergens": "Allergens",

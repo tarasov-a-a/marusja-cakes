@@ -28,14 +28,16 @@ const product: Product = {
   grad: ['#000', '#fff'],
   tags: ['classic'],
   allergensKey: 'none',
-  sizes: [{ size: 'full', price: 100, servesKey: 'small' }],
+  sizes: [{ size: 'full', price: { egp: 100, rub: 180 }, servesKey: 'small' }],
 };
 
-const cart: CartItem[] = [{ key: 'test-cake', product, qty: 2, size: 'Full cake', price: 100 }];
+const cart: CartItem[] = [
+  { key: 'test-cake', product, qty: 2, size: 'Full cake', price: { egp: 100, rub: 180 } },
+];
 
 describe('buildOrderMarkdown', () => {
-  it('renders heading, per-item line totals, and a bold total', () => {
-    const md = buildOrderMarkdown(cart, t, { subtotal: 200, delivery: 150, total: 350 });
+  it('renders heading, per-item line totals, and a bold total in EGP', () => {
+    const md = buildOrderMarkdown(cart, t, 'egp', { subtotal: 200, delivery: 150, total: 350 });
     expect(md).toContain('# 🎂 New order');
     expect(md).toContain('🍰 Test Cake · Full cake × 2 — E£200.00');
     expect(md).toContain('Subtotal: E£200.00');
@@ -43,8 +45,15 @@ describe('buildOrderMarkdown', () => {
     expect(md).toContain('**🎉 Total: E£350.00**');
   });
 
+  it('formats the order in the active currency (RUB)', () => {
+    const md = buildOrderMarkdown(cart, t, 'rub', { subtotal: 360, delivery: 300, total: 660 });
+    expect(md).toContain('🍰 Test Cake · Full cake × 2 — 360.00 ₽');
+    expect(md).toContain('Subtotal: 360.00 ₽');
+    expect(md).toContain('**🎉 Total: 660.00 ₽**');
+  });
+
   it('labels free delivery instead of a price when delivery is 0', () => {
-    const md = buildOrderMarkdown(cart, t, { subtotal: 200, delivery: 0, total: 200 });
+    const md = buildOrderMarkdown(cart, t, 'egp', { subtotal: 200, delivery: 0, total: 200 });
     expect(md).toContain('Delivery: Free');
     expect(md).not.toContain('Delivery: E£0');
   });

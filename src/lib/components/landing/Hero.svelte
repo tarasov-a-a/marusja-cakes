@@ -2,12 +2,16 @@
   import { ArrowRight, Sparkles } from 'lucide-svelte';
   import Button from '$lib/components/ui/Button.svelte';
   import { t } from '$lib/i18n';
-  import { formatPrice } from '$lib/currency';
+  import { currency, fmt, priceIn } from '$lib/currency';
+  import { getProductById, headlinePrice } from '$lib/data/products';
   import {
     getLandingHeroSrc,
     getLandingHeroSrcSet,
     LANDING_HERO_SIZES,
   } from '$lib/productImages';
+
+  // The hero "from" tag mirrors the bestseller's headline price.
+  const heroPrice = headlinePrice(getProductById('pancho-pineapple')!);
 
   let stats = $derived([
     ['12k+', $t('landing:stats.cakes')],
@@ -67,7 +71,7 @@
         />
       </div>
       <div class="priceTag">
-        <small>{$t('common:from')}</small>{formatPrice(900)}
+        <small>{$t('common:from')}</small>{$fmt(priceIn(heroPrice, $currency))}
       </div>
     </div>
   </div>

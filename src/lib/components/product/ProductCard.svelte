@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { Plus, Star } from 'lucide-svelte';
   import ProductMedia from '$lib/components/product/ProductMedia.svelte';
-  import { formatPrice } from '$lib/currency';
+  import { currency, fmt, priceIn } from '$lib/currency';
   import { defaultSize, headlinePrice } from '$lib/data/products';
   import { t } from '$lib/i18n';
   import { addToCart, flash } from '$lib/stores/shop';
@@ -62,7 +62,7 @@
     <h3 class="name">{product.name}</h3>
     <p class="tagline">{product.tagline}</p>
     <div class="footer">
-      <div class="price">{formatPrice(headlinePrice(product))}</div>
+      <div class="price">{$fmt(priceIn(headlinePrice(product), $currency))}</div>
       <button
         type="button"
         class="addBtn"

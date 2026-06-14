@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { Menu as MenuIcon, ShoppingBag, User, X } from 'lucide-svelte';
+  import CurrencySwitcher from '$lib/components/layout/CurrencySwitcher.svelte';
   import LanguageSwitcher from '$lib/components/layout/LanguageSwitcher.svelte';
   import { features } from '$lib/flags';
   import { t } from '$lib/i18n';
@@ -47,6 +48,7 @@
     </nav>
 
     <div class="actions">
+      <CurrencySwitcher />
       <LanguageSwitcher />
       {#if features.auth}
         <button

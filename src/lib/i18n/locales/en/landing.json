@@ -12,7 +12,7 @@
     "daily": "fresh daily"
   },
   "trust": {
-    "delivery": "Free delivery over E£1500",
+    "delivery": "Free delivery over {{amount}}",
     "nextDay": "Next day after 11am",
     "madeToOrder": "Always made to order",
     "butter": "Real-butter promise"

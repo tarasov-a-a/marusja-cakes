@@ -200,7 +200,14 @@ export class ShopPage {
 
   // ── Language switcher (desktop) ────────────────────────────────────────────
   languageButton(label: 'English' | 'Русский' | 'العربية'): Locator {
-    return this.page.locator('.switcher').getByRole('button', { name: label });
+    return this.page.getByRole('group', { name: 'Language' }).getByRole('button', { name: label });
+  }
+
+  // ── Currency switcher (desktop) ────────────────────────────────────────────
+  currencyButton(label: 'EGP' | 'RUB'): Locator {
+    return this.page
+      .getByRole('group', { name: 'Currency' })
+      .getByRole('button', { name: label, exact: true });
   }
 }
 
