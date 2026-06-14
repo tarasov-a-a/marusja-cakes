@@ -1,12 +1,10 @@
 {
   "chooseSize": "Выберите размер",
   "sizes": {
-    "petite": "Мини",
-    "standard": "Стандарт",
-    "grand": "Большой",
-    "petiteServes": "на 4",
-    "grandServes": "на 16",
-    "standardServes": "на {{serves}}"
+    "full": "Целый торт",
+    "half": "Половина торта",
+    "slice": "Кусочек",
+    "serves": "на {{serves}}"
   },
   "addToCart": "В корзину · E£{{total}}",
   "meta": {

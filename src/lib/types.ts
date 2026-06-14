@@ -17,16 +17,31 @@ export type TagKey =
   | 'nutty'
   | 'tropical';
 
+/** The three cake formats. Not every cake is produced in every size. */
+export type SizeKey = 'full' | 'half' | 'slice';
+
+/**
+ * One purchasable format of a cake. A product's `sizes` list carries the full
+ * size catalogue for that cake — which formats exist, their price, and how many
+ * each serves. Locale-neutral: `servesKey` is a `serves:*` i18n key, never a
+ * display string.
+ */
+export interface SizeOption {
+  size: SizeKey;
+  price: number;
+  servesKey: string;
+}
+
 export interface Product {
   id: string;
-  price: number;
   rating: number;
   reviews: number;
   category: CategoryKey[];
   grad: [string, string];
   tags: TagKey[];
   allergensKey: string;
-  servesKey: string;
+  /** Available formats, ordered largest → smallest. `sizes[0]` is the default. */
+  sizes: SizeOption[];
 }
 
 export interface LocalizedProduct extends Product {

@@ -1,3 +1,4 @@
+import { defaultSize } from '$lib/data/products';
 import type { TranslateFn } from '$lib/i18n';
 import type { LocalizedProduct, Product } from '$lib/types';
 
@@ -11,7 +12,8 @@ export function localizeProduct(product: Product, t: TranslateFn): LocalizedProd
     categoryLabel: t(`categories:${product.category[0]}`),
     tagLabels: product.tags.map((tag) => t(`tags:${tag}`)),
     allergens: t(`allergens:${product.allergensKey}`),
-    serves: t(`serves:${product.servesKey}`),
+    // Headline serving = the default (largest) size's serving.
+    serves: t(`serves:${defaultSize(product).servesKey}`),
   };
 }
 

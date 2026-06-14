@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getProductById, PRODUCTS } from './products';
+import { defaultSize, getProductById, headlinePrice, PRODUCTS } from './products';
 import { CATEGORY_KEYS } from '../constants/categories';
 import enAllergens from '../i18n/locales/en/allergens.json';
 import enCategories from '../i18n/locales/en/categories.json';
@@ -22,6 +22,19 @@ describe('products data', () => {
     });
   });
 
+  describe('size helpers', () => {
+    it('defaultSize returns the first (largest) format', () => {
+      const cocoa = getProductById('cocoa-grove')!;
+      expect(defaultSize(cocoa)).toBe(cocoa.sizes[0]);
+      expect(defaultSize(cocoa).size).toBe('full');
+    });
+
+    it('headlinePrice is the default size price', () => {
+      const cocoa = getProductById('cocoa-grove')!;
+      expect(headlinePrice(cocoa)).toBe(cocoa.sizes[0].price);
+    });
+  });
+
   describe('catalogue integrity', () => {
     it('has unique product ids', () => {
       const ids = PRODUCTS.map((p) => p.id);
@@ -29,7 +42,6 @@ describe('products data', () => {
     });
 
     it.each(PRODUCTS)('$id is internally well-formed', (product) => {
-      expect(product.price).toBeGreaterThan(0);
       expect(product.rating).toBeGreaterThanOrEqual(0);
       expect(product.rating).toBeLessThanOrEqual(5);
       expect(product.reviews).toBeGreaterThanOrEqual(0);
@@ -38,8 +50,25 @@ describe('products data', () => {
       expect(product.grad).toHaveLength(2);
       product.grad.forEach((c) => expect(c).toMatch(/^#[0-9A-Fa-f]{3,8}$/));
       expect(product.allergensKey).not.toBe('');
-      expect(product.servesKey).not.toBe('');
       product.category.forEach((c) => expect(CATEGORY_KEYS).toContain(c));
+    });
+
+    const SIZE_KEYS = ['full', 'half', 'slice'] as const;
+
+    it.each(PRODUCTS)('$id offers a well-formed, ordered size catalogue', (product) => {
+      expect(product.sizes.length).toBeGreaterThan(0);
+      // Default (headline) format is always the full cake.
+      expect(product.sizes[0].size).toBe('full');
+      // No duplicate formats, and sizes run largest → smallest by price.
+      const keys = product.sizes.map((s) => s.size);
+      expect(new Set(keys).size).toBe(keys.length);
+      const prices = product.sizes.map((s) => s.price);
+      expect(prices).toEqual([...prices].sort((a, b) => b - a));
+      product.sizes.forEach((opt) => {
+        expect(SIZE_KEYS).toContain(opt.size);
+        expect(opt.price).toBeGreaterThan(0);
+        expect(opt.servesKey).not.toBe('');
+      });
     });
   });
 
@@ -62,7 +91,9 @@ describe('products data', () => {
         expect(enTags as Record<string, string>).toHaveProperty(tag),
       );
       expect(enAllergens as Record<string, string>).toHaveProperty(product.allergensKey);
-      expect(enServes as Record<string, string>).toHaveProperty(product.servesKey);
+      product.sizes.forEach((opt) =>
+        expect(enServes as Record<string, string>).toHaveProperty(opt.servesKey),
+      );
     });
   });
 });

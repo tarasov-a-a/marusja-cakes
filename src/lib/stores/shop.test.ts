@@ -19,14 +19,13 @@ import {
 
 const product = (id: string, price = 100): Product => ({
   id,
-  price,
   rating: 5,
   reviews: 0,
   category: ['signature'],
   grad: ['#000', '#fff'],
   tags: ['new'],
   allergensKey: 'eggsDairyWheat',
-  servesKey: '8',
+  sizes: [{ size: 'full', price, servesKey: '8' }],
 });
 
 beforeEach(() => {
@@ -38,24 +37,24 @@ beforeEach(() => {
 
 describe('shop store — cart', () => {
   describe('addToCart', () => {
-    it('adds a new line for an unseen product', () => {
+    it('adds a new line, defaulting to the headline (full) size', () => {
       addToCart(product('cocoa-grove'));
       const items = get(cart);
       expect(items).toHaveLength(1);
-      expect(items[0]).toMatchObject({ key: 'cocoa-grove', qty: 1, size: 'Standard' });
+      expect(items[0]).toMatchObject({ key: 'cocoa-grove', qty: 1, size: 'full' });
     });
 
-    it('uses the product price by default but honors an explicit override', () => {
+    it('uses the headline size price by default but honors an explicit override', () => {
       addToCart(product('a', 250));
-      addToCart(product('b', 250), 1, 'Standard', 999);
+      addToCart(product('b', 250), 1, 'Half cake', 999);
       const [a, b] = get(cart);
       expect(a.price).toBe(250);
       expect(b.price).toBe(999);
     });
 
     it('respects custom qty and size', () => {
-      addToCart(product('a'), 3, 'Grand');
-      expect(get(cart)[0]).toMatchObject({ qty: 3, size: 'Grand' });
+      addToCart(product('a'), 3, 'Half cake');
+      expect(get(cart)[0]).toMatchObject({ qty: 3, size: 'Half cake' });
     });
 
     it('increments quantity instead of duplicating an existing line', () => {

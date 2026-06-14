@@ -1,12 +1,10 @@
 {
   "chooseSize": "اختر الحجم",
   "sizes": {
-    "petite": "صغير",
-    "standard": "قياسي",
-    "grand": "كبير",
-    "petiteServes": "4 أشخاص",
-    "grandServes": "16 شخصاً",
-    "standardServes": "{{serves}} أشخاص"
+    "full": "تورتة كاملة",
+    "half": "نصف تورتة",
+    "slice": "شريحة",
+    "serves": "تكفي {{serves}}"
   },
   "addToCart": "أضف إلى السلة · E£{{total}}",
   "meta": {

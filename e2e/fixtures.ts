@@ -144,7 +144,7 @@ export class ShopPage {
   }
 
   // ── Product detail ───────────────────────────────────────────────────────
-  sizeButton(label: 'Petite' | 'Standard' | 'Grand'): Locator {
+  sizeButton(label: 'Full cake' | 'Half cake' | 'Slice'): Locator {
     return this.page.getByRole('button', { name: new RegExp(`^${label}`) });
   }
 
