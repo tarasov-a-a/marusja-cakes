@@ -35,7 +35,63 @@ npm run check     # svelte-check (types + a11y)
 ```
 
 The contents of `build/` are deployable to any static host (Netlify, Vercel,
-GitHub Pages, S3, nginx…).
+GitHub Pages, S3, nginx…). Production runs on **Google Cloud Storage + Cloud
+CDN** — see below.
+
+## Deployment & CI/CD
+
+Production is a GCS bucket served through a global HTTPS load balancer with
+**Cloud CDN**, so the static files are edge-cached close to users (the bucket
+itself lives in **`me-central1` / Doha** for low cache-miss latency to Egypt).
+GitHub Actions builds and publishes on every push to `main`.
+
+**Live URL:** <https://marusja-cakes.com> (`www` → apex 301; HTTP → HTTPS 301).
+
+### Pipeline
+
+- **`.github/workflows/ci.yml`** — on PRs and pushes to `main`: `npm run check`,
+  unit tests (`npm test`), the static `build`, and the Playwright E2E suite.
+- **`.github/workflows/deploy.yml`** — on pushes to `main` (and manual dispatch):
+  build → publish to the bucket → set cache headers → invalidate the CDN.
+
+Deploy authenticates to GCP **keylessly via Workload Identity Federation** — no
+service-account keys are stored in GitHub. The non-secret identifiers come from
+GitHub Actions **repository Variables** (not Secrets):
+
+```ini
+GCP_PROJECT      = marusja-cakes
+GCP_WIF_PROVIDER = projects/867862583/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+GCP_DEPLOY_SA    = github-deployer@marusja-cakes.iam.gserviceaccount.com
+GCS_BUCKET       = marusja-cakes-web
+GCP_URL_MAP      = marusja-cakes-lb
+```
+
+### Caching
+
+Hashed `_app/immutable/**` assets get `public, max-age=31536000, immutable`;
+HTML and `_app/version.json` get `no-cache, must-revalidate`. Deploy uploads
+without deleting old assets and then **invalidates the CDN** — that invalidation
+is the atomic cutover, so in-flight visitors never hit a missing asset.
+
+### GCP resources (project `marusja-cakes`)
+
+```
+Cloud DNS (marusja-cakes.com A → 34.111.160.133)
+  → Global external HTTPS LB  (forwarding rules :443 / :80→301)
+    ├─ host www.marusja-cakes.com → 301 apex
+    └─ host marusja-cakes.com → backend bucket (Cloud CDN, CACHE_ALL_STATIC)
+                                 → gs://marusja-cakes-web  (me-central1)
+  Google-managed SSL cert: marusja-cakes.com + www.marusja-cakes.com
+```
+
+A manual publish (e.g. to seed or hot-fix) is the same three steps the workflow
+runs, using your own `gcloud auth`:
+
+```bash
+gcloud storage rsync build gs://marusja-cakes-web --recursive --project=marusja-cakes
+# then re-apply cache-control on _app/immutable/** and **.html (see deploy.yml), then:
+gcloud compute url-maps invalidate-cdn-cache marusja-cakes-lb --path="/*" --async --project=marusja-cakes
+```
 
 ## Feature flags
 
