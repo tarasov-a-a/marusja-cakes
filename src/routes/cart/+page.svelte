@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ArrowRight, MessageCircle, Send } from 'lucide-svelte';
+  import { ArrowRight, Info, MessageCircle, Send } from 'lucide-svelte';
   import { browser } from '$app/environment';
   import CartLine from '$lib/components/cart/CartLine.svelte';
   import Button from '$lib/components/ui/Button.svelte';
@@ -94,6 +94,10 @@
             </a>
             <Button variant="telegram" fullWidth onclick={sendViaTelegram}>
               <Send size={18} /> {$t('cart:telegram')}
+              <span class="tgInfo">
+                <Info size={16} />
+                <span class="tgTip" role="tooltip">{$t('cart:telegramHint')}</span>
+              </span>
             </Button>
           </div>
         </div>
@@ -289,6 +293,58 @@
   .sendLink {
     display: block;
     text-decoration: none;
+  }
+
+  /* Info icon sits next to the label and reveals the tooltip on hover/focus. */
+  .tgInfo {
+    position: relative;
+    display: inline-flex;
+    cursor: help;
+  }
+
+  /* Dim only the icon — not the tooltip child (opacity on .tgInfo would cap it too). */
+  .tgInfo :global(svg) {
+    opacity: 0.85;
+  }
+
+  .tgTip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 220px;
+    padding: 10px 13px;
+    border-radius: 12px;
+    background: var(--color-cocoa);
+    color: var(--color-sponge);
+    box-shadow: 0 8px 24px rgba(43, 25, 10, 0.28);
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    white-space: normal;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+    z-index: 10;
+  }
+
+  /* Little arrow pointing down at the icon. */
+  .tgTip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--color-cocoa);
+  }
+
+  .tgInfo:hover .tgTip,
+  .tgInfo:focus-within .tgTip {
+    opacity: 1;
+    visibility: visible;
   }
 
   @media (max-width: 640px) {

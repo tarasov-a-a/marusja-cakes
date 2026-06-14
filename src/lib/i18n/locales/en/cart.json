@@ -19,6 +19,7 @@
   "whatsapp": "WhatsApp",
   "telegram": "Telegram",
   "telegramCopied": "Order copied — paste it in the chat",
+  "telegramHint": "We'll copy the order details and you can paste them into the chat.",
   "orderHeading": "New order · Marusja Cakes",
   "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}"
 }

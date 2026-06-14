@@ -19,6 +19,7 @@
   "whatsapp": "WhatsApp",
   "telegram": "Telegram",
   "telegramCopied": "تم نسخ الطلب — الصقه في المحادثة",
+  "telegramHint": "سننسخ تفاصيل الطلب ويمكنك لصقها في المحادثة.",
   "orderHeading": "طلب جديد · Marusja Cakes",
   "orderLine": "{{name}} · {{size}} × {{qty}} — {{price}}"
 }
