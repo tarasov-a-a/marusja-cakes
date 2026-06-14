@@ -54,10 +54,24 @@ export class ShopPage {
   async gotoHome() {
     await this.page.goto('/');
     await expect(this.menuHeading).toBeVisible();
+    await this.waitForHydration();
   }
 
   async gotoProduct(id: string) {
     await this.page.goto(`/product/${id}/`);
+    await this.waitForHydration();
+  }
+
+  /**
+   * Block until SvelteKit has hydrated. Routes are prerendered to static HTML,
+   * so the markup (and thus role/text locators) is present *before* the JS
+   * attaches the reactive `onclick` handlers. On a slow CI runner a click can
+   * land on un-hydrated HTML and be silently dropped. `data-hydrated` is set on
+   * <html> by a client-only `$effect` in +layout.svelte, so waiting for it
+   * guarantees handlers are live before the first interaction.
+   */
+  async waitForHydration() {
+    await expect(this.page.locator('html')).toHaveAttribute('data-hydrated', 'true');
   }
 
   // ── Header ──────────────────────────────────────────────────────────────

@@ -66,6 +66,12 @@ GCS_BUCKET       = marusja-cakes-web
 GCP_URL_MAP      = marusja-cakes-lb
 ```
 
+The deploy service account is least-privilege: `roles/storage.objectAdmin` **and**
+`roles/storage.legacyBucketReader` on `gs://marusja-cakes-web` (the latter supplies
+`storage.buckets.get`, which `gcloud storage rsync` needs to validate the bucket —
+`objectAdmin` alone doesn't grant it), plus a custom `cdnInvalidator` role
+(`compute.urlMaps.invalidateCache`) at the project level.
+
 ### Caching
 
 Hashed `_app/immutable/**` assets get `public, max-age=31536000, immutable`;

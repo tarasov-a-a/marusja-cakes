@@ -125,8 +125,20 @@ width lists and the `static/` files in sync if you touch image output.
 Build-time flags read from `VITE_FEATURE_*` env vars. Vite **statically inlines**
 `import.meta.env.VITE_*` at build, so this stays prerender-safe (no request-time
 read) and the value is fixed per build. Set them in `.env`/`.env.local`
-(gitignored — see [.env.example](.env.example)) or inline a build:
+(gitignored — see [.env.example](.env.example)) for local dev, or inline a build:
 `VITE_FEATURE_AUTH=false npm run build`.
+
+- **Production pins flags via a committed [.env.production](.env.production)** —
+  Vite loads it only in `vite build` (production mode), where it out-ranks
+  `.env`/`.env.local`. So the *deployed* build follows that file, **not** the
+  code defaults below: it ships `auth` **off** and `mobileNav` **off** (anonymous,
+  desktop-only). `.env.production` is the one env file that's tracked (the
+  `!.env.production` negation in [.gitignore](.gitignore)); edit it to change what
+  production serves. The **test suites mirror it** so they exercise the shipped
+  config: Vitest statically replaces the flags via `define`
+  ([vitest.config.ts](vitest.config.ts)) and Playwright injects them into the dev
+  server ([e2e/flags.ts](e2e/flags.ts)). Only `npm run dev` ignores it (dev mode
+  reads `.env`/`.env.local`).
 - Convention: a flag is OFF **only** when explicitly set to a falsy token
   (`false`/`0`/`off`/`no`). Unset or anything else ⇒ ON, so features keep their
   committed default unless a build deliberately turns them off. `parseFlag()`
@@ -178,16 +190,19 @@ Two layers with a deliberate division of labour — respect the boundary.
   icon-only controls that expose no accessible name — those are a known a11y gap
   flagged in `accessibility.spec.ts`, not a pattern to copy.
 - Accessibility is enforced in E2E via `@axe-core/playwright` — don't regress it.
-- **Feature flags default OFF in E2E** (unlike the app, which defaults most ON).
-  [e2e/flags.ts](e2e/flags.ts) mirrors `parseFlag` from `src/lib/flags.ts` (it
-  can't import that module — `import.meta.env` doesn't exist in the Node host) and
-  exports `FLAG_ENV`, which [playwright.config.ts](playwright.config.ts) hands to
-  the dev server via `webServer.env`. So the default run exercises the anonymous,
-  desktop-only build. Auth/settings/a11y specs `skip` when `E2E_AUTH` is off;
+- **E2E flags come from [.env.production](.env.production)** — the suite mirrors
+  the deployed config (currently auth + mobileNav OFF, so the default run is the
+  anonymous, desktop-only build). [e2e/flags.ts](e2e/flags.ts) reads that file
+  with a tiny dependency-free `KEY=value` parser + a mirrored `parseFlag` (it
+  can't import `src/lib/flags.ts` — `import.meta.env` doesn't exist in the Node
+  host — nor pull Vite into the host) and exports `FLAG_ENV`, which
+  [playwright.config.ts](playwright.config.ts) injects into the dev server via
+  `webServer.env`. Auth/settings/a11y specs `skip` when `E2E_AUTH` is off;
   [feature-flags.spec.ts](e2e/feature-flags.spec.ts) asserts each surface matches
-  its flag. To run with a flag on, export it for the whole command:
-  `VITE_FEATURE_AUTH=true npm run test:e2e`. Caveat: `env` is ignored when a local
-  dev server is reused (`reuseExistingServer`) — that server keeps its own flags.
+  its flag. A **shell override wins over the file**, so to flip a flag for one
+  run, export it for the whole command: `VITE_FEATURE_AUTH=true npm run test:e2e`.
+  Caveat: `env` is ignored when a local dev server is reused
+  (`reuseExistingServer`) — that server keeps its own flags.
 
 ## Deployment & CI/CD
 
@@ -203,7 +218,10 @@ change the prerender/no-server rules above.
     `npm test`, `npm run build`, and the Playwright E2E suite (the green-light bar).
   - [deploy.yml](.github/workflows/deploy.yml) — on push to `main` (+ manual
     dispatch): build → `gcloud storage rsync build` → set cache headers → CDN
-    invalidate. Runs on Node 22.
+    invalidate. Runs on Node 22. The deploy build is a plain `npm run build`; the
+    flags it ships are pinned by the committed [.env.production](.env.production)
+    (`auth`/`mobileNav` **off**) — see Feature flags above — not by the code
+    defaults. Change production's surface by editing that file, not the workflow.
 - **Auth is keyless Workload Identity Federation** — no SA keys in the repo.
   Deploy reads non-secret identifiers from GitHub Actions **repository Variables**
   (`GCP_PROJECT`, `GCP_WIF_PROVIDER`, `GCP_DEPLOY_SA`, `GCS_BUCKET`, `GCP_URL_MAP`).
@@ -215,8 +233,12 @@ change the prerender/no-server rules above.
   never request a just-deleted asset. Don't add `--delete-unmatched-destination-objects`
   to the deploy step without accounting for that.
 - The deploy SA's permissions are least-privilege: `roles/storage.objectAdmin`
-  on the bucket + a custom `cdnInvalidator` role (`compute.urlMaps.invalidateCache`).
-  Prefer extending the custom role over granting broad `loadBalancerAdmin`.
+  **+ `roles/storage.legacyBucketReader`** on the bucket + a custom `cdnInvalidator`
+  role (`compute.urlMaps.invalidateCache`). The bucket-reader grant is what supplies
+  `storage.buckets.get` — `gcloud storage rsync` validates the destination bucket
+  before syncing, and `objectAdmin` alone does **not** grant `buckets.get` (omitting
+  it fails the deploy's upload step). Prefer extending the custom role over granting
+  broad `loadBalancerAdmin`.
 - Infra/DNS (LB, backend bucket, managed cert, Cloud DNS zone `marusja-cakes-com`)
   was provisioned via `gcloud`; full topology and the manual-publish recipe live in
   [README.md](README.md#deployment--cicd).
