@@ -4,12 +4,21 @@
 </script>
 
 <div class="toast {$toast ? 'visible' : ''}">
-  <Check size={16} strokeWidth={3} color="var(--color-honey)" />
+  <Check
+    class="toast-check"
+    size={16}
+    width={16}
+    height={16}
+    strokeWidth={3}
+    color="var(--color-honey)"
+  />
   {$toast}
 </div>
 
 <style>
   .toast {
+    --gutter: 24px;
+    max-width: calc(100vw - (var(--gutter) * 2));
     position: fixed;
     bottom: 28px;
     left: 50%;
@@ -33,5 +42,11 @@
   .visible {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
+  }
+
+  @media (max-width: 600px) {
+    .toast {
+      width: calc(100vw - (var(--gutter) * 2));
+    }
   }
 </style>
