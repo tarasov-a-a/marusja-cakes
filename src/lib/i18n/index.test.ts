@@ -86,7 +86,7 @@ describe('i18n', () => {
 
     it('coerces numeric params to strings', () => {
       expect(tr()('cart:each', { size: 'Petite', price: 700 })).toBe(
-        'Petite · E£700 each',
+        'Petite · 700 each',
       );
     });
   });

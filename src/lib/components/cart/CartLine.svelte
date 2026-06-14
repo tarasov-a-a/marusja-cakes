@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Minus, Plus, Trash2 } from 'lucide-svelte';
   import CakeArt from '$lib/components/ui/CakeArt.svelte';
-  import { formatPrice } from '$lib/currency';
+  import { currency, fmt, priceIn } from '$lib/currency';
   import { t } from '$lib/i18n';
   import { localizeProduct } from '$lib/localize';
   import { getProductImagePath, hasPhotos } from '$lib/productImages';
@@ -30,7 +30,9 @@
   </a>
   <div class="itemBody">
     <div class="itemName">{localized.name}</div>
-    <div class="itemMeta">{$t('cart:each', { size: item.size, price: item.price })}</div>
+    <div class="itemMeta">
+      {$t('cart:each', { size: item.size, price: $fmt(priceIn(item.price, $currency)) })}
+    </div>
     <div class="itemActions">
       <div class="qty">
         <button type="button" class="qtyBtn" onclick={() => updateQty(item.key, -1)}>
@@ -51,7 +53,7 @@
       </button>
     </div>
   </div>
-  <div class="itemPrice">{formatPrice(item.price * item.qty)}</div>
+  <div class="itemPrice">{$fmt(priceIn(item.price, $currency) * item.qty)}</div>
 </div>
 
 <style>

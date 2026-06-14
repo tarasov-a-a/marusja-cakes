@@ -18,7 +18,7 @@
   import SectionTitle from '$lib/components/ui/SectionTitle.svelte';
   import Toggle from '$lib/components/ui/Toggle.svelte';
   import { getOrdersForUser, sortOrders } from '$lib/data/orders';
-  import { formatPrice } from '$lib/currency';
+  import { currency, fmt, priceIn, type SupportedCurrency } from '$lib/currency';
   import { features } from '$lib/flags';
   import { locale, t } from '$lib/i18n';
   import { flash, setAuthOpen, setUser, user } from '$lib/stores/shop';
@@ -38,11 +38,11 @@
     }
   });
 
-  function orderSubtotal(items: OrderItem[]) {
-    return items.reduce((sum, item) => sum + item.qty * item.price, 0);
+  function orderSubtotal(items: OrderItem[], c: SupportedCurrency) {
+    return items.reduce((sum, item) => sum + item.qty * priceIn(item.price, c), 0);
   }
-  function orderTotal(order: Order) {
-    return orderSubtotal(order.items) + order.delivery;
+  function orderTotal(order: Order, c: SupportedCurrency) {
+    return orderSubtotal(order.items, c) + priceIn(order.delivery, c);
   }
 
   let tabs = $derived([
@@ -182,14 +182,14 @@
                     <div class="orderRow">
                       <span>{$t('settings:orders.delivery')}</span>
                       <span>
-                        {order.delivery === 0
+                        {priceIn(order.delivery, $currency) === 0
                           ? $t('settings:orders.free')
-                          : formatPrice(order.delivery, 2)}
+                          : $fmt(priceIn(order.delivery, $currency), 2)}
                       </span>
                     </div>
                     <div class="orderTotal">
                       <span>{$t('settings:orders.total')}</span>
-                      <span>{formatPrice(orderTotal(order), 2)}</span>
+                      <span>{$fmt(orderTotal(order, $currency), 2)}</span>
                     </div>
                   </div>
                   <div style="margin-top: 14px">

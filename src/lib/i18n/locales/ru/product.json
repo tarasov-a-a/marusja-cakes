@@ -6,7 +6,7 @@
     "slice": "Кусочек",
     "serves": "на {{serves}}"
   },
-  "addToCart": "В корзину · E£{{total}}",
+  "addToCart": "В корзину · {{total}}",
   "meta": {
     "serves": "Порций",
     "allergens": "Аллергены",

@@ -13,7 +13,7 @@ const item: CartItem = {
   product: getProductById('pancho-pineapple')!,
   qty: 2,
   size: 'Full cake',
-  price: 900,
+  price: { egp: 900, rub: 1620 },
 };
 
 beforeEach(() => {

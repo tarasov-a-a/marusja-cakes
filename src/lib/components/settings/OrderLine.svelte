@@ -1,7 +1,7 @@
 <script lang="ts">
   import CakeArt from '$lib/components/ui/CakeArt.svelte';
   import { getProductById } from '$lib/data/products';
-  import { formatPrice } from '$lib/currency';
+  import { currency, fmt, priceIn } from '$lib/currency';
   import { t } from '$lib/i18n';
   import { localizeProduct } from '$lib/localize';
   import { getProductImagePath, hasPhotos } from '$lib/productImages';
@@ -31,10 +31,12 @@
     </a>
     <div class="orderItemBody">
       <div class="orderItemName">{localized.name}</div>
-      <div class="orderItemMeta">{$t('cart:each', { size: item.size, price: item.price })}</div>
+      <div class="orderItemMeta">
+        {$t('cart:each', { size: item.size, price: $fmt(priceIn(item.price, $currency)) })}
+      </div>
     </div>
     <div class="orderItemQty">×{item.qty}</div>
-    <div class="orderItemPrice">{formatPrice(item.price * item.qty)}</div>
+    <div class="orderItemPrice">{$fmt(priceIn(item.price, $currency) * item.qty)}</div>
   </div>
 {/if}
 

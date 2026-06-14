@@ -41,7 +41,7 @@ describe('orders data', () => {
       date: '2026-01-01T00:00:00.000Z',
       status,
       items: [],
-      delivery: 0,
+      delivery: { egp: 0, rub: 0 },
     });
 
     it('returns a new array without mutating the input', () => {

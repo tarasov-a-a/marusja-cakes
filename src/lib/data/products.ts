@@ -1,5 +1,9 @@
+import type { Money } from '$lib/currency';
 import type { Product, SizeOption } from '$lib/types';
 
+// NOTE: `rub` prices below are PLACEHOLDERS (~1.8× EGP, rounded) pending the
+// shop owner's exact Russian-ruble price list. Replace each `rub` value with the
+// confirmed price; `egp` values are the live catalogue prices.
 export const PRODUCTS: Product[] = [
   {
     id: 'pancho-pineapple',
@@ -10,7 +14,7 @@ export const PRODUCTS: Product[] = [
     tags: ['bestseller', 'tropical'],
     allergensKey: 'eggsDairyWheat',
     // A layered showpiece — only ever made as a whole cake.
-    sizes: [{ size: 'full', price: 900, servesKey: '8to10' }],
+    sizes: [{ size: 'full', price: { egp: 900, rub: 1620 }, servesKey: '8to10' }],
   },
   {
     id: 'rose-velvet',
@@ -21,9 +25,9 @@ export const PRODUCTS: Product[] = [
     tags: ['new', 'floral'],
     allergensKey: 'eggsDairyWheat',
     sizes: [
-      { size: 'full', price: 700, servesKey: '8' },
-      { size: 'half', price: 400, servesKey: '4' },
-      { size: 'slice', price: 90, servesKey: '1' },
+      { size: 'full', price: { egp: 700, rub: 1260 }, servesKey: '8' },
+      { size: 'half', price: { egp: 400, rub: 720 }, servesKey: '4' },
+      { size: 'slice', price: { egp: 90, rub: 160 }, servesKey: '1' },
     ],
   },
   {
@@ -35,9 +39,9 @@ export const PRODUCTS: Product[] = [
     tags: ['rich'],
     allergensKey: 'eggsDairyWheatSoy',
     sizes: [
-      { size: 'full', price: 750, servesKey: '10to12' },
-      { size: 'half', price: 430, servesKey: '6' },
-      { size: 'slice', price: 95, servesKey: '1' },
+      { size: 'full', price: { egp: 750, rub: 1350 }, servesKey: '10to12' },
+      { size: 'half', price: { egp: 430, rub: 770 }, servesKey: '6' },
+      { size: 'slice', price: { egp: 95, rub: 170 }, servesKey: '1' },
     ],
   },
   {
@@ -49,9 +53,9 @@ export const PRODUCTS: Product[] = [
     tags: ['classic'],
     allergensKey: 'eggsDairyWheat',
     sizes: [
-      { size: 'full', price: 700, servesKey: '8' },
-      { size: 'half', price: 400, servesKey: '4' },
-      { size: 'slice', price: 85, servesKey: '1' },
+      { size: 'full', price: { egp: 700, rub: 1260 }, servesKey: '8' },
+      { size: 'half', price: { egp: 400, rub: 720 }, servesKey: '4' },
+      { size: 'slice', price: { egp: 85, rub: 150 }, servesKey: '1' },
     ],
   },
   {
@@ -63,9 +67,9 @@ export const PRODUCTS: Product[] = [
     tags: ['zesty'],
     allergensKey: 'eggsDairyWheat',
     sizes: [
-      { size: 'full', price: 500, servesKey: '8' },
-      { size: 'half', price: 290, servesKey: '4' },
-      { size: 'slice', price: 70, servesKey: '1' },
+      { size: 'full', price: { egp: 500, rub: 900 }, servesKey: '8' },
+      { size: 'half', price: { egp: 290, rub: 520 }, servesKey: '4' },
+      { size: 'slice', price: { egp: 70, rub: 125 }, servesKey: '1' },
     ],
   },
   {
@@ -77,9 +81,9 @@ export const PRODUCTS: Product[] = [
     tags: ['seasonal', 'nutty'],
     allergensKey: 'eggsDairyWheatNuts',
     sizes: [
-      { size: 'full', price: 550, servesKey: '10' },
-      { size: 'half', price: 320, servesKey: '5' },
-      { size: 'slice', price: 75, servesKey: '1' },
+      { size: 'full', price: { egp: 550, rub: 990 }, servesKey: '10' },
+      { size: 'half', price: { egp: 320, rub: 580 }, servesKey: '5' },
+      { size: 'slice', price: { egp: 75, rub: 135 }, servesKey: '1' },
     ],
   },
 ];
@@ -94,6 +98,6 @@ export function defaultSize(product: Product): SizeOption {
 }
 
 /** The headline price shown on cards: the default (largest) size's price. */
-export function headlinePrice(product: Product): number {
+export function headlinePrice(product: Product): Money {
   return defaultSize(product).price;
 }

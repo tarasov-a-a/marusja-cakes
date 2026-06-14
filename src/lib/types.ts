@@ -1,3 +1,5 @@
+import type { Money } from '$lib/currency';
+
 export type CategoryKey =
   | 'signature'
   | 'chocolate'
@@ -28,7 +30,7 @@ export type SizeKey = 'full' | 'half' | 'slice';
  */
 export interface SizeOption {
   size: SizeKey;
-  price: number;
+  price: Money;
   servesKey: string;
 }
 
@@ -59,7 +61,7 @@ export interface CartItem {
   product: Product;
   qty: number;
   size: string;
-  price: number;
+  price: Money;
 }
 
 export interface User {
@@ -76,7 +78,7 @@ export interface OrderItem {
   productId: string;
   qty: number;
   size: string;
-  price: number;
+  price: Money;
 }
 
 export interface Order {
@@ -85,7 +87,7 @@ export interface Order {
   date: string;
   status: OrderStatus;
   items: OrderItem[];
-  delivery: number;
+  delivery: Money;
 }
 
 export type SettingsTab = 'profile' | 'orders' | 'notifications' | 'payment' | 'security';

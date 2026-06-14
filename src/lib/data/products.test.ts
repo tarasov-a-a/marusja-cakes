@@ -62,11 +62,13 @@ describe('products data', () => {
       // No duplicate formats, and sizes run largest → smallest by price.
       const keys = product.sizes.map((s) => s.size);
       expect(new Set(keys).size).toBe(keys.length);
-      const prices = product.sizes.map((s) => s.price);
+      const prices = product.sizes.map((s) => s.price.egp);
       expect(prices).toEqual([...prices].sort((a, b) => b - a));
       product.sizes.forEach((opt) => {
         expect(SIZE_KEYS).toContain(opt.size);
-        expect(opt.price).toBeGreaterThan(0);
+        // Every supported currency must carry a positive price.
+        expect(opt.price.egp).toBeGreaterThan(0);
+        expect(opt.price.rub).toBeGreaterThan(0);
         expect(opt.servesKey).not.toBe('');
       });
     });

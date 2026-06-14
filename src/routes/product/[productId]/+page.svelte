@@ -6,7 +6,7 @@
   import ProductMedia from '$lib/components/product/ProductMedia.svelte';
   import Stars from '$lib/components/ui/Stars.svelte';
   import { PRODUCTS } from '$lib/data/products';
-  import { formatPrice } from '$lib/currency';
+  import { currency, fmt, priceIn } from '$lib/currency';
   import { t } from '$lib/i18n';
   import { localizeProduct, localizeProducts } from '$lib/localize';
   import { addToCart, flash } from '$lib/stores/shop';
@@ -103,7 +103,7 @@
             >
               <div class="sizeName">{s.label}</div>
               <div class="sizeSub">{s.sub}</div>
-              <div class="sizePrice">{formatPrice(s.price)}</div>
+              <div class="sizePrice">{$fmt(priceIn(s.price, $currency))}</div>
             </button>
           {/each}
         </div>
@@ -132,7 +132,7 @@
           }}
         >
           <ShoppingBag size={19} />
-          {$t('product:addToCart', { total: sizePrice * qty })}
+          {$t('product:addToCart', { total: $fmt(priceIn(sizePrice, $currency) * qty) })}
         </Button>
       </div>
 

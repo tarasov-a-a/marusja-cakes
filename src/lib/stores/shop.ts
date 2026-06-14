@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { derived, get, writable } from 'svelte/store';
+import { currency, priceIn, type Money } from '$lib/currency';
 import type { CartItem, Product, User } from '$lib/types';
 
 // ── Cart ──────────────────────────────────────────────────────────────────
@@ -9,7 +10,7 @@ export function addToCart(
   product: Product,
   qty = 1,
   size = '',
-  price?: number,
+  price?: Money,
 ): void {
   const headline = product.sizes[0];
   const unitPrice = price ?? headline.price;
@@ -40,8 +41,9 @@ export const cartCount = derived(cart, ($cart) =>
   $cart.reduce((sum, i) => sum + i.qty, 0),
 );
 
-export const subtotal = derived(cart, ($cart) =>
-  $cart.reduce((sum, i) => sum + i.qty * i.price, 0),
+// Subtotal in the active currency — re-derives when the cart OR currency changes.
+export const subtotal = derived([cart, currency], ([$cart, $currency]) =>
+  $cart.reduce((sum, i) => sum + i.qty * priceIn(i.price, $currency), 0),
 );
 
 // ── Auth ──────────────────────────────────────────────────────────────────

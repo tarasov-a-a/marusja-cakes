@@ -6,7 +6,7 @@
  * flavor is the `messenger` module's job (see src/lib/messenger.ts).
  */
 
-import { formatPrice } from '$lib/currency';
+import { formatPrice, priceIn, type SupportedCurrency } from '$lib/currency';
 import type { TranslateFn } from '$lib/i18n';
 import { localizeProduct } from '$lib/localize';
 import { toPlainText, toWhatsAppText } from '$lib/messenger';
@@ -28,6 +28,7 @@ export interface OrderTotals {
 export function buildOrderMarkdown(
   cart: CartItem[],
   t: TranslateFn,
+  currency: SupportedCurrency,
   { subtotal, delivery, total }: OrderTotals,
 ): string {
   const lines: string[] = [
@@ -44,17 +45,17 @@ export function buildOrderMarkdown(
         name,
         size: item.size,
         qty: item.qty,
-        price: formatPrice(item.qty * item.price, 2),
+        price: formatPrice(item.qty * priceIn(item.price, currency), currency, 2),
       })}`,
     );
   }
 
-  const deliveryLabel = delivery === 0 ? t('cart:free') : formatPrice(delivery, 2);
+  const deliveryLabel = delivery === 0 ? t('cart:free') : formatPrice(delivery, currency, 2);
   lines.push(
     '',
-    `${t('cart:subtotal')}: ${formatPrice(subtotal, 2)}`,
+    `${t('cart:subtotal')}: ${formatPrice(subtotal, currency, 2)}`,
     `🚚 ${t('cart:delivery')}: ${deliveryLabel}`,
-    `**🎉 ${t('cart:total')}: ${formatPrice(total, 2)}**`,
+    `**🎉 ${t('cart:total')}: ${formatPrice(total, currency, 2)}**`,
     '',
     t('cart:orderThanks'),
   );

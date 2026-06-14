@@ -7,8 +7,8 @@ Guidance for Claude Code (claude.ai/code) when working in this repository.
 **Marusja Cakes** — a static cake-shop web app. SvelteKit 2 + Svelte 5 (runes) +
 TypeScript, prerendered to plain HTML/CSS/JS with `@sveltejs/adapter-static`.
 There is **no backend**: cart, auth, and toast state live in in-memory Svelte
-stores; the only persisted state is the chosen locale (`localStorage`). The
-`build/` output deploys to any static host.
+stores; the only persisted state is the chosen **locale and currency**
+(`localStorage`). The `build/` output deploys to any static host.
 
 This is a v2 rewrite of a React/Vite prototype that still lives at `../app-v1`
 (an additional working directory). Treat `app-v1` as read-only reference for
@@ -62,9 +62,11 @@ green, and — if behaviour changed — the relevant `test:e2e` spec green.
   ([cart/+page.svelte](src/routes/cart/+page.svelte)) hand the order to the shop
   owner over WhatsApp / Telegram via **client-side click-to-chat deep links** —
   staying true to the no-backend rule. Don't "add checkout" with a server.
-- [order.ts](src/lib/order.ts) builds the order as locale-aware standard Markdown
-  (`buildOrderMarkdown`, reusing `localizeProduct` + `formatPrice` + the `cart:*`
-  keys) and turns it into links (`whatsAppHref` → `wa.me/<number>?text=…`,
+- [order.ts](src/lib/order.ts) builds the order as locale- **and currency**-aware
+  standard Markdown (`buildOrderMarkdown(cart, t, currency, totals)`, reusing
+  `localizeProduct` + `formatPrice` + `priceIn` + the `cart:*` keys — the caller
+  passes the active `$currency`) and turns it into links (`whatsAppHref` →
+  `wa.me/<number>?text=…`,
   `telegramHref` → `t.me/<username>?text=…`). Both are plain `<a href>` links that
   pre-fill the chat with the order — the customer just hits Send.
 - [messenger.ts](src/lib/messenger.ts) is the **converter half** of the
@@ -80,14 +82,41 @@ green, and — if behaviour changed — the relevant `test:e2e` spec green.
   WhatsApp/Telegram **Button variants carry the official brand colors.**
 
 ### Data layer — locale-neutral by design
-- `src/lib/data/` holds **locale-neutral** records: a `Product` has `id`, `price`,
-  `grad`, `category`/`tag`/`allergens`/`serves` **keys** — never display strings.
+- `src/lib/data/` holds **locale-neutral** records: a `Product`'s sizes carry
+  `price`, plus `grad`, `category`/`tag`/`allergens`/`serves` **keys** — never
+  display strings.
 - Display strings come only from i18n. [localize.ts](src/lib/localize.ts) joins
   a `Product` + the translator into a `LocalizedProduct`. Keep this split: data
   carries keys, i18n carries words. Adding a product = add the record in
   `data/products.ts` **and** its strings in every locale's `products.json`.
+- **Prices are per-currency, not locale strings.** Each `SizeOption.price` is a
+  `Money` map (`{ egp, rub }`) authored explicitly in `data/products.ts` — see
+  Currency below. Adding a product means giving every size a price in **every**
+  supported currency.
 - Types live in [types.ts](src/lib/types.ts) — `Product` vs `LocalizedProduct`
   is the core distinction; respect it when typing component props.
+
+### Currency (`src/lib/currency.ts`)
+- Two currencies: `egp` (Egyptian Pounds, default) and `rub` (Russian Rubles).
+  **Independent of locale** — a Russian speaker can view EGP and vice-versa.
+  Chosen currency persists to `localStorage` (`CURRENCY_STORAGE_KEY`); the
+  `currency` writable + `setCurrency()` mirror the i18n `locale` store exactly,
+  and [+layout.svelte](src/routes/+layout.svelte) persists it alongside locale.
+- **No FX conversion** — prices are hand-authored per currency. A `Money` is
+  `Record<SupportedCurrency, number>`; `priceIn(money, currency)` selects the
+  active number, and `formatPrice(amount, currency, decimals?)` renders it with
+  that currency's symbol/placement (`E£900` prefix vs `1620 ₽` suffix). The
+  reactive `fmt` **derived store** (mirrors i18n's `t`) is the component-side
+  formatter: `$fmt(priceIn(size.price, $currency))`, `$fmt(total, 2)`.
+- All money math stays in the active currency: `subtotal` derives on
+  `[cart, currency]`, `CartItem.price`/`OrderItem.price`/`Order.delivery` are
+  `Money`, and **delivery thresholds/fees are per-currency** too (`DELIVERY`).
+- The **CurrencySwitcher** ([components/layout/CurrencySwitcher.svelte](src/lib/components/layout/CurrencySwitcher.svelte))
+  is a copy of `LanguageSwitcher` (desktop button group + mobile dropdown),
+  mounted beside it in the header. It is **not** behind a feature flag.
+- RUB prices/thresholds currently ship as **placeholders** (marked `TODO`) until
+  the shop owner confirms real numbers — see `data/products.ts`, `data/orders.ts`,
+  and `DELIVERY` in `currency.ts`.
 
 ### i18n (`src/lib/i18n/index.ts`)
 - Custom lightweight store, **not** a library. Locales: `en`, `ru`, `ar` (Arabic
@@ -100,6 +129,11 @@ green, and — if behaviour changed — the relevant `test:e2e` spec green.
   `<html lang/dir>` and persists locale. **Any new user-facing string must be added
   to all three locales** — `check`/tests won't always catch an English-only string,
   so be deliberate.
+- **i18n strings carry no currency symbol.** Price-bearing keys (`cart:each`,
+  `product:addToCart`, `cart:freeDeliveryHint`, `landing:trust.delivery`)
+  interpolate an already-formatted value — the symbol comes from `formatPrice`,
+  not the translation. The `currency` namespace holds only the switcher labels
+  (`EGP`/`RUB`). Don't reintroduce a hardcoded `E£`/`₽` into any locale string.
 
 ### Components (`src/lib/components/`)
 Grouped by area: `ui` (primitives — Button, Toggle, Field, Stars, Spinner, Toast),

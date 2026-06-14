@@ -25,7 +25,7 @@ const product = (id: string, price = 100): Product => ({
   grad: ['#000', '#fff'],
   tags: ['new'],
   allergensKey: 'eggsDairyWheat',
-  sizes: [{ size: 'full', price, servesKey: '8' }],
+  sizes: [{ size: 'full', price: { egp: price, rub: price }, servesKey: '8' }],
 });
 
 beforeEach(() => {
@@ -46,10 +46,10 @@ describe('shop store — cart', () => {
 
     it('uses the headline size price by default but honors an explicit override', () => {
       addToCart(product('a', 250));
-      addToCart(product('b', 250), 1, 'Half cake', 999);
+      addToCart(product('b', 250), 1, 'Half cake', { egp: 999, rub: 999 });
       const [a, b] = get(cart);
-      expect(a.price).toBe(250);
-      expect(b.price).toBe(999);
+      expect(a.price.egp).toBe(250);
+      expect(b.price.egp).toBe(999);
     });
 
     it('respects custom qty and size', () => {

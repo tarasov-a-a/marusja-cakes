@@ -4,16 +4,19 @@
   import Button from '$lib/components/ui/Button.svelte';
   import CakeArt from '$lib/components/ui/CakeArt.svelte';
   import { TELEGRAM_USERNAME, WHATSAPP_NUMBER } from '$lib/contacts';
-  import { formatPrice } from '$lib/currency';
+  import { currency, DELIVERY, fmt } from '$lib/currency';
   import { t } from '$lib/i18n';
   import { buildOrderMarkdown, telegramHref, whatsAppHref } from '$lib/order';
   import { cart, subtotal } from '$lib/stores/shop';
 
-  let delivery = $derived($subtotal > 1500 || $subtotal === 0 ? 0 : 150);
+  let deliveryConfig = $derived(DELIVERY[$currency]);
+  let delivery = $derived(
+    $subtotal > deliveryConfig.freeOver || $subtotal === 0 ? 0 : deliveryConfig.fee,
+  );
   let total = $derived($subtotal + delivery);
 
   let orderMd = $derived(
-    buildOrderMarkdown($cart, $t, { subtotal: $subtotal, delivery, total }),
+    buildOrderMarkdown($cart, $t, $currency, { subtotal: $subtotal, delivery, total }),
   );
   // Both deep links pre-fill the chat with the order; the customer just hits Send.
   let waHref = $derived(whatsAppHref(WHATSAPP_NUMBER, orderMd));
@@ -53,22 +56,24 @@
         <h2 class="summaryTitle">{$t('cart:summary')}</h2>
         <div class="row">
           <span>{$t('cart:subtotal')}</span>
-          <span class="rowVal">{formatPrice($subtotal, 2)}</span>
+          <span class="rowVal">{$fmt($subtotal, 2)}</span>
         </div>
         <div class="row">
           <span>{$t('cart:delivery')}</span>
           <span class="rowVal {delivery === 0 ? 'rowValFree' : ''}">
-            {delivery === 0 ? $t('cart:free') : formatPrice(delivery, 2)}
+            {delivery === 0 ? $t('cart:free') : $fmt(delivery, 2)}
           </span>
         </div>
         {#if delivery > 0}
           <div class="hint">
-            {$t('cart:freeDeliveryHint', { amount: (1500 - $subtotal).toFixed(2) })}
+            {$t('cart:freeDeliveryHint', {
+              amount: $fmt(deliveryConfig.freeOver - $subtotal, 2),
+            })}
           </div>
         {/if}
         <div class="totalRow">
           <span class="totalLabel">{$t('cart:total')}</span>
-          <span class="totalVal">{formatPrice(total, 2)}</span>
+          <span class="totalVal">{$fmt(total, 2)}</span>
         </div>
         <div class="sendOrder">
           <h3 class="sendTitle">{$t('cart:sendOrderTitle')}</h3>

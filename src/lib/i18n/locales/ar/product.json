@@ -6,7 +6,7 @@
     "slice": "شريحة",
     "serves": "تكفي {{serves}}"
   },
-  "addToCart": "أضف إلى السلة · E£{{total}}",
+  "addToCart": "أضف إلى السلة · {{total}}",
   "meta": {
     "serves": "تكفي",
     "allergens": "مسببات الحساسية",
