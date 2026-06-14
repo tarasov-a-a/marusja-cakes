@@ -45,10 +45,10 @@
   let isRtl = $derived($dir === 'rtl');
 
   function goPrev() {
-    activeIndex = (activeIndex - 1 + count) % count;
+    if (activeIndex > 0) activeIndex -= 1;
   }
   function goNext() {
-    activeIndex = (activeIndex + 1) % count;
+    if (activeIndex < count - 1) activeIndex += 1;
   }
   function closeLightbox() {
     lightboxOpen = false;
@@ -155,15 +155,6 @@
         <X size={20} />
       </button>
 
-      <button
-        type="button"
-        class="lightboxNav"
-        onclick={goPrev}
-        aria-label={$t('common:gallery.previous')}
-      >
-        <ChevronLeft size={28} class="flipDir" />
-      </button>
-
       <div class="lightboxStage">
         <img
           src={lightboxSrc}
@@ -173,19 +164,33 @@
           class="lightboxImg"
           decoding="async"
         />
-        <p class="lightboxCounter" aria-live="polite">
-          {$t('common:gallery.imageOf', { current: activeIndex + 1, total: count })}
-        </p>
       </div>
 
-      <button
-        type="button"
-        class="lightboxNav"
-        onclick={goNext}
-        aria-label={$t('common:gallery.next')}
-      >
-        <ChevronRight size={28} class="flipDir" />
-      </button>
+      {#if activeIndex > 0}
+        <button
+          type="button"
+          class="lightboxNav lightboxPrev"
+          onclick={goPrev}
+          aria-label={$t('common:gallery.previous')}
+        >
+          <ChevronLeft size={28} class="flipDir" />
+        </button>
+      {/if}
+
+      {#if activeIndex < count - 1}
+        <button
+          type="button"
+          class="lightboxNav lightboxNext"
+          onclick={goNext}
+          aria-label={$t('common:gallery.next')}
+        >
+          <ChevronRight size={28} class="flipDir" />
+        </button>
+      {/if}
+
+      <p class="lightboxCounter" aria-live="polite">
+        {$t('common:gallery.imageOf', { current: activeIndex + 1, total: count })}
+      </p>
     </div>
   </div>
 {/if}
@@ -298,10 +303,7 @@
     border-radius: 24px;
     border: 2px solid var(--color-cocoa);
     box-shadow: 0 30px 70px rgba(90, 52, 22, 0.4);
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    padding: 16px 8px;
+    padding: 8px;
     animation: pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
   }
 
@@ -310,7 +312,7 @@
     top: 12px;
     inset-inline-end: 12px;
     z-index: 1;
-    background: rgba(90, 52, 22, 0.12);
+    background: rgba(90, 52, 22, 0.45);
     border: none;
     width: 38px;
     height: 38px;
@@ -318,17 +320,20 @@
     display: grid;
     place-items: center;
     cursor: pointer;
-    color: var(--color-cocoa);
+    color: var(--color-cream);
     transition: background 0.2s;
   }
 
   .lightboxClose:hover {
-    background: rgba(90, 52, 22, 0.22);
+    background: rgba(90, 52, 22, 0.65);
   }
 
   .lightboxNav {
-    flex-shrink: 0;
-    background: rgba(90, 52, 22, 0.08);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    background: rgba(90, 52, 22, 0.45);
     border: none;
     width: 44px;
     height: 44px;
@@ -336,44 +341,51 @@
     display: grid;
     place-items: center;
     cursor: pointer;
-    color: var(--color-cocoa);
+    color: var(--color-cream);
     transition: background 0.2s, transform 0.15s;
   }
 
+  .lightboxPrev {
+    inset-inline-start: 12px;
+  }
+
+  .lightboxNext {
+    inset-inline-end: 12px;
+  }
+
   .lightboxNav:hover {
-    background: rgba(90, 52, 22, 0.18);
+    background: rgba(90, 52, 22, 0.65);
   }
 
   .lightboxNav:active {
-    transform: scale(0.95);
+    transform: translateY(-50%) scale(0.95);
   }
 
   .lightboxStage {
-    min-width: 0;
-    min-height: 0;
+    width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 36px 8px 8px;
   }
 
   .lightboxImg {
-    flex: 1;
-    min-height: 0;
     width: 100%;
-    max-height: 100%;
+    height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 33px;
-    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
   }
 
   .lightboxCounter {
-    margin: 10px 0 0;
+    position: absolute;
+    inset-inline-start: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    z-index: 1;
+    margin: 0;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(90, 52, 22, 0.45);
     font-size: 13px;
     font-weight: 700;
-    color: var(--color-coffee);
+    color: var(--color-cream);
   }
 </style>
