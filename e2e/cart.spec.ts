@@ -9,7 +9,7 @@ function cartLine(page: import('@playwright/test').Page, name: string) {
 
 test.describe('Cart — empty state', () => {
   test('shows the empty cart message and a path back to the menu', async ({ page, app }) => {
-    await page.goto('/cart/'); // full load → in-memory cart starts empty
+    await page.goto('/cart/'); // isolated context → persisted cart starts empty
     await expect(page.getByRole('heading', { name: 'Your cart is empty' })).toBeVisible();
 
     await page.getByRole('link', { name: /Find a cake/ }).click();
@@ -123,5 +123,23 @@ test.describe('Cart — with items', () => {
     await page.getByRole('link', { name: /Keep shopping/ }).click();
     await expect(page).toHaveURL(/localhost:\d+\/$/);
     await app.expectCartCount(1); // cart survives client-side navigation
+  });
+
+  test('the cart is persisted to localStorage and survives a full page reload', async ({
+    app,
+    page,
+  }) => {
+    await app.gotoHome();
+    await app.addToCartFromCard(pancho.name);
+    await app.expectCartCount(1);
+
+    // A full reload wipes the in-memory stores, but the cart is rehydrated from
+    // localStorage — unlike auth/toast state, it persists across page loads.
+    await page.reload();
+    await app.waitForHydration();
+    await app.expectCartCount(1);
+
+    await app.openCart();
+    await expect(cartLine(page, pancho.name)).toBeVisible();
   });
 });

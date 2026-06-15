@@ -43,7 +43,7 @@ export function buildOrderMarkdown(
     lines.push(
       `🍰 ${t('cart:orderLine', {
         name,
-        size: item.size,
+        size: t(`product:sizes.${item.size}`),
         qty: item.qty,
         price: formatPrice(item.qty * priceIn(item.price, currency), currency, 2),
       })}`,

@@ -47,7 +47,6 @@
 
   let selected = $derived(product.sizes.find((s) => s.size === size) ?? product.sizes[0]);
   let sizePrice = $derived(selected.price);
-  let sizeLabel = $derived($t(`product:sizes.${selected.size}`));
 
   let metaRows = $derived([
     ['serves', $t(`serves:${selected.servesKey}`)],
@@ -127,7 +126,7 @@
           variant="rose"
           fullWidth
           onclick={() => {
-            addToCart(product, qty, sizeLabel, sizePrice);
+            addToCart(product, qty, size);
             flash($t('cart:added', { name: localized.name }));
           }}
         >

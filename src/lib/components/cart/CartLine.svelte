@@ -31,7 +31,10 @@
   <div class="itemBody">
     <div class="itemName">{localized.name}</div>
     <div class="itemMeta">
-      {$t('cart:each', { size: item.size, price: $fmt(priceIn(item.price, $currency)) })}
+      {$t('cart:each', {
+        size: $t(`product:sizes.${item.size}`),
+        price: $fmt(priceIn(item.price, $currency)),
+      })}
     </div>
     <div class="itemActions">
       <div class="qty">

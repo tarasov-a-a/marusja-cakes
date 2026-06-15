@@ -14,6 +14,7 @@ const t: TranslateFn = (key, params) => {
     'cart:total': 'Total',
     'cart:orderLine': '{{name}} · {{size}} × {{qty}} — {{price}}',
     'products:test-cake.name': 'Test Cake',
+    'product:sizes.full': 'Full cake',
   };
   let out = map[key] ?? key;
   if (params) out = out.replace(/\{\{(\w+)\}\}/g, (_, k: string) => String(params[k] ?? ''));
@@ -32,7 +33,7 @@ const product: Product = {
 };
 
 const cart: CartItem[] = [
-  { key: 'test-cake', product, qty: 2, size: 'Full cake', price: { egp: 100, rub: 180 } },
+  { key: 'test-cake', product, qty: 2, size: 'full', price: { egp: 100, rub: 180 } },
 ];
 
 describe('buildOrderMarkdown', () => {
