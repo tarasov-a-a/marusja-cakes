@@ -69,8 +69,7 @@
         aria-label={$t('common:a11y.addToCart', { name: product.name })}
         onclick={(e) => {
           e.stopPropagation();
-          const headline = defaultSize(product);
-          addToCart(product, 1, $t(`product:sizes.${headline.size}`), headline.price);
+          addToCart(product, 1, defaultSize(product).size);
           flash($t('cart:added', { name: product.name }));
         }}
       >

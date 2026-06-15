@@ -12,7 +12,7 @@ const item: CartItem = {
   key: 'pancho-pineapple',
   product: getProductById('pancho-pineapple')!,
   qty: 2,
-  size: 'Full cake',
+  size: 'full',
   price: { egp: 900, rub: 1620 },
 };
 
@@ -25,6 +25,11 @@ describe('CartLine.svelte', () => {
   it('renders the localized product name', () => {
     render(CartLine, { props: { item } });
     expect(screen.getByText('Pancho Pineapple with walnut')).toBeInTheDocument();
+  });
+
+  it('localizes the size key for display (key in the store, words at render)', () => {
+    render(CartLine, { props: { item } });
+    expect(screen.getByText(/Full cake/)).toBeInTheDocument();
   });
 
   it('renders the line total as qty * price, formatted', () => {

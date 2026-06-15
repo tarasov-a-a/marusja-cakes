@@ -60,7 +60,16 @@ export interface CartItem {
   key: string;
   product: Product;
   qty: number;
-  size: string;
+  /**
+   * The chosen format, as a locale-neutral `SizeKey` (never a display label).
+   * Components localize it via `product:sizes.<key>` at render time.
+   */
+  size: SizeKey;
+  /**
+   * Per-currency unit price for the chosen size. Derived from the catalogue
+   * (`product.sizes`), never persisted — `loadCart` repopulates it from the
+   * latest product config so a stored cart always reflects current prices.
+   */
   price: Money;
 }
 

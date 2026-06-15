@@ -4,12 +4,15 @@ import { test as base, expect, type Locator, type Page } from '@playwright/test'
  * Shared E2E fixtures and a light Page-Object Model for MarusjaCakes.
  *
  * Design notes that every spec depends on:
- *  - Cart + auth state live in in-memory Svelte stores. A full page load
+ *  - Auth + toast state live in in-memory Svelte stores. A full page load
  *    (`page.goto`, `page.reload`) RESETS them; client-side navigation (clicking
  *    an internal `<a>` or the in-app account button) PRESERVES them. So any
- *    multi-page flow that carries cart/auth state must navigate by clicking,
- *    never by `goto`. The POM methods below encode that rule.
- *  - Locale is the only persisted state (localStorage 'marusja-cakes-locale').
+ *    multi-page flow that carries auth state must navigate by clicking, never by
+ *    `goto`. The POM methods below encode that rule.
+ *  - The cart, by contrast, is PERSISTED (localStorage 'marusja-cakes-cart'), so
+ *    it survives reloads too — see cart.spec.ts. Playwright isolates storage per
+ *    test, so each test still starts with an empty cart.
+ *  - Locale is also persisted (localStorage 'marusja-cakes-locale').
  *  - Auth is mocked: picking a provider resolves after ~1.1s, sets a user, and
  *    closes the modal. Toasts auto-dismiss after ~2.2s, so assert on them
  *    promptly via the always-present `.toast` element's text.
